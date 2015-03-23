@@ -2,10 +2,11 @@
 
 By [Andrey96](http://andrey96.ru).
 
+[![Build Status](http://build.andrey96.ru/job/novatech/badge/icon)](http://build.andrey96.ru/job/novatech/)
 
 ## Downloads
 
-You can find all mod versions on my [build service ![Build Status](http://build.andrey96.ru/job/novatech/badge/icon)](http://build.andrey96.ru/job/novatech/)
+You can find all mod versions on my [build service](http://build.andrey96.ru/job/novatech/)
 
 ## Installion
 
