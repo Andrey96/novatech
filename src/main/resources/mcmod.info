@@ -1,0 +1,16 @@
+[
+{
+  "modid": "novatech",
+  "name": "NovaTech mod",
+  "description": "Alternative industrial mod",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["Andrey96"],
+  "credits": "My classmates for textures",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
