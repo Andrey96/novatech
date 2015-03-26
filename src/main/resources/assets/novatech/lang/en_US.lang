@@ -1,14 +1,12 @@
 itemGroup.novatech=NovaTech
 
 item.screwdr.name=Screwdriver
+item.lasergun.name=Laser gun
 
-item.battery0.name=Energy cell
-item.battery1.name=Energy cell
-item.battery2.name=Energy cell
-item.battery3.name=Energy cell (full)
+item.battery.name=Energy cell
+item.battery_full.name=Energy cell (full)
 
-item.batpack0.name=Energy cell pack
-item.batpack1.name=Energy cell pack
-item.batpack2.name=Energy cell pack
-item.batpack3.name=Energy cell pack (full)
+item.batpack.name=Energy cell pack
+item.batpack_full.name=Energy cell pack (full)
 
+tooltip.charge=Charge: %d/%dEU

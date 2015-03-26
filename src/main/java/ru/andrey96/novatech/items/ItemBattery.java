@@ -3,7 +3,9 @@ package ru.andrey96.novatech.items;
 import java.util.List;
 
 import ru.andrey96.novatech.api.IEnergyItem;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +21,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return super.getUnlocalizedName(stack)+stack.getItemDamage();
+		return stack.getItemDamage()==3?super.getUnlocalizedName(stack)+"_full":super.getUnlocalizedName(stack);
 	}
 
 	@Override
@@ -29,7 +31,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 
 	@Override
 	public long getCurrentCharge(ItemStack stack) {
-		return stack.hasTagCompound()?stack.getTagCompound().getLong("charge"):0;
+		return stack.hasTagCompound()?stack.getTagCompound().getLong("charge"):stack.getItemDamage()==3?this.getMaxCharge(stack):0;
 	}
 	
 	@Override
@@ -64,6 +66,13 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 		return true;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
+		tooltip.add(I18n.format("tooltip.charge", this.getCurrentCharge(stack), this.getMaxCharge(stack)));
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
     public void getSubItems(Item itemIn, CreativeTabs tab, List subItems)
     {
