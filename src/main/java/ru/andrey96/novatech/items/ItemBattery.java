@@ -2,6 +2,7 @@ package ru.andrey96.novatech.items;
 
 import java.util.List;
 
+import ru.andrey96.novatech.api.IEnergyItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBattery extends NTItem implements IChargeable{
+public class ItemBattery extends NTItem implements IEnergyItem{
 	
 	public ItemBattery(String name){
 		super(name, 4);
@@ -32,25 +33,35 @@ public class ItemBattery extends NTItem implements IChargeable{
 	}
 	
 	@Override
-	public long modifyCharge(ItemStack stack, long delta) {
+	public long modifyCharge(ItemStack stack, long delta, boolean force) {
 		if(delta==0) return 0;
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
-		long charge = stack.getTagCompound().getLong("charge")+delta;
+		long actual = stack.getTagCompound().getLong("charge");
+		long charge = actual+delta;
 		if(charge<=0){
-			stack.setTagCompound(null);
-			stack.setItemDamage(0);
+			if(force || actual==0){
+				stack.setTagCompound(null);
+				stack.setItemDamage(0);
+			}
 			return charge;
 		}
 		long max = this.getMaxCharge(stack);
 		if(charge>=max){
-			stack.setTagCompound(null);
-			stack.setItemDamage(3);
+			if(force || actual==max){
+				stack.setTagCompound(null);
+				stack.setItemDamage(3);
+			}
 			return charge-max;
 		}
 		stack.getTagCompound().setLong("charge", charge);
 		stack.setItemDamage((int)Math.round((((double)charge/max)*2)));
 		return 0;
+	}
+	
+	@Override
+	public boolean canOutput() {
+		return true;
 	}
 	
 	@SideOnly(Side.CLIENT)
