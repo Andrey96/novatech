@@ -1,6 +1,8 @@
 package ru.andrey96.novatech.items;
 
 import ru.andrey96.novatech.NovaTech;
+import ru.andrey96.novatech.items.energy.ItemBatpack;
+import ru.andrey96.novatech.items.energy.ItemBattery;
 import ru.andrey96.novatech.items.tools.ItemLaserGun;
 import ru.andrey96.novatech.items.tools.ItemScrewdriver;
 import net.minecraft.client.Minecraft;

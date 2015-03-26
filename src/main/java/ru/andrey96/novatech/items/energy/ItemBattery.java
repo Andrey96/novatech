@@ -1,8 +1,9 @@
-package ru.andrey96.novatech.items;
+package ru.andrey96.novatech.items.energy;
 
 import java.util.List;
 
 import ru.andrey96.novatech.api.IEnergyItem;
+import ru.andrey96.novatech.items.NTItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;

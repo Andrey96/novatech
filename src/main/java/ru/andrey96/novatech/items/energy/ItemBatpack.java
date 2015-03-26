@@ -1,4 +1,4 @@
-package ru.andrey96.novatech.items;
+package ru.andrey96.novatech.items.energy;
 
 import net.minecraft.item.ItemStack;
 

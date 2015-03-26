@@ -1,7 +1,5 @@
 package ru.andrey96.novatech;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import ru.andrey96.novatech.blocks.NTBlocks;
 import ru.andrey96.novatech.items.NTItems;
 import net.minecraft.creativetab.CreativeTabs;

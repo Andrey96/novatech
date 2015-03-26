@@ -1,4 +1,4 @@
-package ru.andrey96.novatech.items;
+package ru.andrey96.novatech.items.tools;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.andrey96.novatech.api.IEnergyItem;
+import ru.andrey96.novatech.items.NTItem;
 
 public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 
