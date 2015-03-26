@@ -9,31 +9,24 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class NTItems {
 	
-	private static boolean isClient;
-	public static Item battery, batpack, screwdr;
+	public final NTItem screwdr, battery, batpack;
+	public final INTItem[] items;
 	
-	public static void init(boolean argIsClient){
-		isClient = argIsClient;
-		battery = register(new ItemBattery(), "battery", 4);
-		batpack = register(new ItemBatpack(), "batpack", 4);
-		screwdr = register(new ItemScrewdriver(), "screwdr", 1);
+	private boolean isClient;
+	
+	public NTItems(boolean isClient) {
+		this.isClient = isClient;
+		items = new INTItem[3];
+		items[0] = screwdr = new ItemScrewdriver("screwdr");
+		items[1] = battery = new ItemBattery("battery");
+		items[2] = batpack = new ItemBatpack("batpack");
 	}
 	
-	private static Item register(Item it, String name, int variants){
-		GameRegistry.registerItem(it, name, NovaTech.MODID);
-		it.setUnlocalizedName(name);
+	public void init() {
 		if(isClient){
-			it.setCreativeTab(NovaTech.creativeTab);
-			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(it, 0, new ModelResourceLocation(NovaTech.MODID+":"+name, "inventory"));
-			if(variants>1){
-				String[] varr = new String[variants];
-				for(int i=0; i<variants; i++){
-					varr[i] = NovaTech.MODID+":"+name+i;
-				}
-				ModelBakery.addVariantName(it, varr);
-			}
+			for(INTItem item : items)
+				item.registerModels();
 		}
-		return it;
 	}
 	
 }

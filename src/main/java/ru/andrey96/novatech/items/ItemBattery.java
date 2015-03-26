@@ -9,11 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBattery extends Item implements IChargeable{
+public class ItemBattery extends NTItem implements IChargeable{
 	
-	public ItemBattery(){
-		this.setHasSubtypes(true);
-		this.setMaxDamage(0);
+	public ItemBattery(String name){
+		super(name, 4);
 		this.setMaxStackSize(32);
 	}
 	

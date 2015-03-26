@@ -2,11 +2,13 @@ package ru.andrey96.novatech.blocks;
 
 public class NTBlocks {
 	
-	private static boolean isClient;
+	private boolean isClient;
 	
+	public NTBlocks(boolean isClient){
+		this.isClient = isClient;
+	}
 	
-	public static void init(boolean argIsClient){
-		isClient = argIsClient;
+	public void init(){
 		
 	}
 	

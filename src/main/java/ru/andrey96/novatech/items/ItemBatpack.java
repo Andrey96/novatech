@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBatpack extends ItemBattery {
 	
-	public ItemBatpack(){
-		super();
+	public ItemBatpack(String name){
+		super(name);
 		setMaxStackSize(16);
 	}
 	

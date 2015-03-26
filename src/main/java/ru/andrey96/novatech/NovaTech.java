@@ -21,24 +21,39 @@ public class NovaTech {
 	@Instance(value = MODID)
 	public static NovaTech instance;
 	
+	private NTItems items;
+	private NTBlocks blocks;
+	private final NTConfig config = new NTConfig();
+	
 	public static final CreativeTabs creativeTab = new CreativeTabs(MODID){
 		@Override
 		public Item getTabIconItem() {
-			return NTItems.screwdr;
+			return NovaTech.instance.items.screwdr;
 		}
 	};
+	
+	public NTItems getItems(){
+		return items;
+	}
+	
+	public NTBlocks getBlocks(){
+		return blocks;
+	}
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		NTConfig.init();
+		boolean isClient = event.getSide()==Side.CLIENT; //If true, render is registered
+		config.init();
+		blocks = new NTBlocks(isClient);
+		items = new NTItems(isClient);
     }
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		NTBlocks.init(event.getSide()==Side.CLIENT);
-		NTItems.init(event.getSide()==Side.CLIENT);
+		blocks.init();
+		items.init();
 	}
 	
 }

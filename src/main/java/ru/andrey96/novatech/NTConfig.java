@@ -4,7 +4,7 @@ public class NTConfig {
 	
 	
 	
-	public static void init(){
+	public void init(){
 		
 	}
 	
