@@ -9,4 +9,6 @@ item.battery_full.name=Energy cell (full)
 item.batpack.name=Energy cell pack
 item.batpack_full.name=Energy cell pack (full)
 
+tile.crusher.name=Crusher
+
 tooltip.charge=Charge: %d/%dEU

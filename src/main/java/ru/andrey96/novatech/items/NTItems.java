@@ -16,7 +16,7 @@ public class NTItems {
 	public final NTItem screwdr, battery, batpack, lasergun;
 	public final INTItem[] items;
 	
-	private boolean isClient;
+	private final boolean isClient;
 	
 	public NTItems(boolean isClient) {
 		this.isClient = isClient;

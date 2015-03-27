@@ -10,6 +10,7 @@ public interface IScrewable {
 	
 	/**
 	 * Method that called when player uses Screwdriver item on Block/TileEntity
+	 * To use it, just implement IScrewable in Block/TileEntity class
 	 * @param stack stack player used to screw
 	 * @param player player who screwed
 	 * @param world world where screwing happened

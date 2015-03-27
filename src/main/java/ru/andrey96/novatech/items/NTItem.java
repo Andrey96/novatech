@@ -26,7 +26,7 @@ public class NTItem extends Item implements INTItem{
 		}
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(NovaTech.creativeTab);
-		GameRegistry.registerItem(this, name, NovaTech.MODID);
+		GameRegistry.registerItem(this, name);
 	}
 	
 	public NTItem(String name) {
@@ -42,10 +42,10 @@ public class NTItem extends Item implements INTItem{
 	public void registerModels() {
 		if(variants>1){
 			for(int i=0; i<variants; i++){
-				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, i, new ModelResourceLocation(NovaTech.MODID+":"+name+i, "inventory"));
+				Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, i, new ModelResourceLocation(NovaTech.MODID+":"+this.getName()+i, "inventory"));
 			}
 		}else{
-			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, 0, new ModelResourceLocation(NovaTech.MODID+":"+name, "inventory"));
+			Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, 0, new ModelResourceLocation(NovaTech.MODID+":"+this.getName(), "inventory"));
 		}
 	}
 	

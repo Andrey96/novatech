@@ -9,7 +9,7 @@ public interface INTItem {
 	 */
 	public String getName();
 	/**
-	 * Registers item's models in game on initialization state
+	 * Registers item's models in game on initialization state. Called only on client
 	 */
 	public void registerModels();
 	

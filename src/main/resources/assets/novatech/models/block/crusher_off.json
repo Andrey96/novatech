@@ -1,0 +1,9 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "novatech:blocks/machine",
+        "top": "novatech:blocks/machine_top",
+        "front": "novatech:blocks/crusher_off",
+        "side": "novatech:blocks/machine"
+    }
+}
