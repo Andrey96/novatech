@@ -43,7 +43,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 		long actual = stack.getTagCompound().getLong("charge");
 		long charge = actual+delta;
 		if(charge<=0){
-			if(force || actual==0){
+			if(force || charge==0 || actual==0){
 				stack.setTagCompound(null);
 				stack.setItemDamage(0);
 			}
@@ -51,7 +51,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 		}
 		long max = this.getMaxCharge(stack);
 		if(charge>=max){
-			if(force || actual==max){
+			if(force || charge==max || actual==max){
 				stack.setTagCompound(null);
 				stack.setItemDamage(3);
 			}

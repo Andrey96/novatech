@@ -33,7 +33,7 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 			stack.setTagCompound(new NBTTagCompound());
 		long charge = stack.getTagCompound().getLong("charge")+delta;
 		if(charge<=0){
-			if(force){
+			if(force || charge==0){
 				stack.getTagCompound().setLong("charge", 0);
 				stack.setItemDamage(100);
 			}
@@ -41,7 +41,7 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 		}
 		long max = this.getMaxCharge(stack);
 		if(charge>=max){
-			if(force){
+			if(force || charge==max){
 				stack.getTagCompound().setLong("charge", max);
 				stack.setItemDamage(1);
 			}
