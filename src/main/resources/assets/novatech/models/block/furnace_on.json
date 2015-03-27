@@ -2,8 +2,11 @@
     "parent": "block/cube",
     "textures": {
         "particle": "novatech:blocks/machine",
-        "top": "novatech:blocks/machine_top",
-        "front": "novatech:blocks/furnace_on",
-        "side": "novatech:blocks/machine"
+        "down": "novatech:blocks/machine",
+        "up": "novatech:blocks/machine_top",
+        "north": "novatech:blocks/furnace_on",
+        "east": "novatech:blocks/machine",
+        "south": "novatech:blocks/machine",
+        "west": "novatech:blocks/machine"
     }
 }
