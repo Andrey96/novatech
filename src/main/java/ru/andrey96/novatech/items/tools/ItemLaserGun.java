@@ -19,6 +19,7 @@ import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.items.NTItem;
+import ru.andrey96.novatech.recipes.NTRecipes;
 
 public class ItemLaserGun extends ItemEnergyTool{
 
@@ -34,7 +35,8 @@ public class ItemLaserGun extends ItemEnergyTool{
 			varr[i+1] = NovaTech.MODID+":"+name+"_power"+i;
 		}
 		varr[5] = NovaTech.MODID+":"+name+"_empty";
-		ModelBakery.addVariantName(this, varr);
+		if(NTUtils.isClient())
+			ModelBakery.addVariantName(this, varr);
 	}
 
 	@Override

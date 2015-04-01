@@ -3,6 +3,7 @@ package ru.andrey96.novatech;
 import ru.andrey96.novatech.blocks.NTBlocks;
 import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.items.NTItems;
+import ru.andrey96.novatech.recipes.NTRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,6 +57,7 @@ public class NovaTech {
 	{
 		blocks.init();
 		items.init();
+		NTRecipes.init(items, blocks);
 		if(event.getSide()==Side.CLIENT){
 			MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 		}

@@ -26,11 +26,20 @@ public class NTUtils {
 	
 	@SideOnly(Side.CLIENT)
 	private static Timer timer;
+	private static boolean client;
 	
 	static void init(boolean isClient) {
+		client = isClient;
 		if(isClient){
 			timer = (Timer)getFieldVal(Minecraft.getMinecraft(), "field_71428_T", "timer");
 		}
+	}
+	
+	/**
+	 * @return is mod running on client (true) or on dedicated server (false)
+	 */
+	public static boolean isClient() {
+		return client;
 	}
 	
 	/**

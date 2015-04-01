@@ -58,7 +58,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 			return charge-max;
 		}
 		stack.getTagCompound().setLong("charge", charge);
-		stack.setItemDamage((int)Math.round((((double)charge/max)*2)));
+		stack.setItemDamage((int)Math.round((((double)charge/max)*3)));
 		return 0;
 	}
 	
@@ -75,7 +75,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 			if(!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 			stack.getTagCompound().setLong("charge", charge);
-			stack.setItemDamage((int)Math.round((((double)charge/max)*2)));
+			stack.setItemDamage((int)Math.round((((double)charge/max)*3)));
 		}
 	}
 	

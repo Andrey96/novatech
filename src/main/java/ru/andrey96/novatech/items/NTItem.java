@@ -6,6 +6,8 @@ import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class NTItem extends Item implements INTItem{
 
@@ -39,6 +41,7 @@ public class NTItem extends Item implements INTItem{
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		if(variants>1){
 			for(int i=0; i<variants; i++){
