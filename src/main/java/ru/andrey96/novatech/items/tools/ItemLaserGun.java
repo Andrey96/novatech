@@ -1,5 +1,7 @@
 package ru.andrey96.novatech.items.tools;
 
+import javax.vecmath.Point3d;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -42,7 +44,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	
 	@Override
 	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining) {
-		long charge = this.getCurrentCharge(stack);
+		long charge = this.getCharge(stack);
 		if(charge<powerConsumption[0])
 			return usageModels[4];
 		if(player.getItemInUse() != null){
@@ -61,7 +63,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		if(this.getCurrentCharge(itemStackIn)>=powerConsumption[0])
+		if(this.getCharge(itemStackIn)>=powerConsumption[0])
 			playerIn.setItemInUse(itemStackIn, this.getMaxItemUseDuration(itemStackIn));
 		return itemStackIn;
 	}
@@ -69,7 +71,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityPlayer playerIn, int timeLeft)
     {
-		long charge = this.getCurrentCharge(stack);
+		long charge = this.getCharge(stack);
 		if(charge<powerConsumption[0]) return;
 		int using = stack.getMaxItemUseDuration() - timeLeft;
 		for(byte i=3; i>=0; i--)
@@ -99,39 +101,34 @@ public class ItemLaserGun extends ItemEnergyTool{
 		public EntityPlayer player;
 		public byte tier;
 		public short renderFramesLeft;
+		//public Vec3 point;
 		public double rayLength;
 		
 		public LaserShot(EntityPlayer player, byte tier) {
 			this.player = player;
 			this.tier = tier;
-			this.renderFramesLeft = (short)(Minecraft.getDebugFPS()/2);
+			this.renderFramesLeft = (short)(Minecraft.getDebugFPS()/4);
 		}
 		
 		public void process() {
-	        MovingObjectPosition obj = NTUtils.rayTrace(player, laserReachDistance[this.tier]);
-			if(obj!=null && obj.typeOfHit!=MovingObjectType.MISS){
-				rayLength = obj.hitVec.subtract(player.getPositionEyes(1f)).lengthVector();
+	        MovingObjectPosition obj = NTUtils.rayTrace(player, laserReachDistance[tier]);
+			Vec3 point;
+	        if(obj!=null && obj.typeOfHit!=MovingObjectType.MISS){
+				point = obj.hitVec;
 			}else{
-				rayLength = laserReachDistance[this.tier];
+				Vec3 look = player.getLookVec();
+				double reach = laserReachDistance[tier];
+				point = NTUtils.getEyesPos(player).addVector(look.xCoord*reach, look.yCoord*reach, look.zCoord*reach);
 			}
-			ClientEventHandler.addLaserShot(this);
-			if(obj!=null){
-				if(obj.typeOfHit==MovingObjectType.BLOCK){
-					System.out.println("HIT BLOCK "+rayLength);
-					if(tier==3){
-						BlockPos pos = obj.getBlockPos();
-						if(!player.worldObj.isRemote)
-							player.worldObj.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), 8f, true);
-					}
+			if(player.worldObj.isRemote){
+				rayLength = point.subtract(player.getPositionEyes(1f)).lengthVector();
+				ClientEventHandler.addLaserShot(this);
+			}else{
+				if(obj==null || obj.typeOfHit==MovingObjectType.BLOCK || tier==3){
+					if(tier==3)
+						player.worldObj.createExplosion(player, point.xCoord, point.yCoord, point.zCoord, 8f, true);
 				}else if(obj.typeOfHit==MovingObjectType.ENTITY && obj.entityHit!=null){
-					System.out.println("HIT ENTITY "+rayLength);
-					Entity ent = obj.entityHit;
-					if(tier==3){
-						if(!player.worldObj.isRemote)
-							player.worldObj.createExplosion(player, ent.posX, ent.posY, ent.posZ, 8f, true);
-					}else if(ent instanceof EntityLivingBase){
-						ent.attackEntityFrom(DamageSource.lightningBolt, laserDamage[tier]);
-					}
+					obj.entityHit.attackEntityFrom(DamageSource.lightningBolt, laserDamage[tier]);
 				}
 			}
 		}

@@ -6,6 +6,7 @@ import ru.andrey96.novatech.items.NTItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -44,6 +45,7 @@ public class NovaTech {
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		boolean isClient = event.getSide()==Side.CLIENT; //If true, render is registered
+		NTUtils.init(isClient);
 		config.init();
 		blocks = new NTBlocks(isClient);
 		items = new NTItems(isClient);

@@ -22,7 +22,7 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 	}
 	
 	@Override
-	public long getCurrentCharge(ItemStack stack) {
+	public long getCharge(ItemStack stack) {
 		return stack.hasTagCompound()?stack.getTagCompound().getLong("charge"):0;
 	}
 	
@@ -53,6 +53,19 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 	}
 	
 	@Override
+	public void setCharge(ItemStack stack, long charge) {
+		long max = this.getMaxCharge(stack);
+		if(charge<0)
+			charge=0;
+		else if(charge>max)
+			charge=max;
+		if(!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		stack.getTagCompound().setLong("charge", charge);
+		stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
+	}
+	
+	@Override
 	public boolean canOutput() {
 		return false;
 	}
@@ -60,7 +73,7 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
-		tooltip.add(I18n.format("tooltip.charge", this.getCurrentCharge(stack), this.getMaxCharge(stack)));
+		tooltip.add(I18n.format("tooltip.charge", this.getCharge(stack), this.getMaxCharge(stack)));
 	}
 	
 	@Override

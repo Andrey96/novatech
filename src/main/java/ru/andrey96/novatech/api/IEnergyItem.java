@@ -13,7 +13,7 @@ public interface IEnergyItem {
 	 * @param stack ItemStack instance to get from
 	 * @return amount of energy stored
 	 */
-	public long getCurrentCharge(ItemStack stack);
+	public long getCharge(ItemStack stack);
 	/**
 	 * Modifies item's charge
 	 * @param stack ItemStack instance to perform action on
@@ -22,6 +22,12 @@ public interface IEnergyItem {
 	 * @return 0 if success, otherwise negative (extra amount needed) if there's lack of energy or positive (extra amount inserted) if supplied too much
 	 */
 	public long modifyCharge(ItemStack stack, long delta, boolean force);
+	/**
+	 * Sets item's charge
+	 * @param stack ItemStack instance to perform action on
+	 * @param charge to set
+	 */
+	public void setCharge(ItemStack stack, long charge);
 	/**
 	 * @return can item output energy or not
 	 */

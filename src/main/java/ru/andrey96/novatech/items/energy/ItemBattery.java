@@ -31,7 +31,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 	}
 
 	@Override
-	public long getCurrentCharge(ItemStack stack) {
+	public long getCharge(ItemStack stack) {
 		return stack.hasTagCompound()?stack.getTagCompound().getLong("charge"):stack.getItemDamage()==3?this.getMaxCharge(stack):0;
 	}
 	
@@ -63,6 +63,23 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 	}
 	
 	@Override
+	public void setCharge(ItemStack stack, long charge) {
+		long max = this.getMaxCharge(stack);
+		if(charge<=0){
+			stack.setTagCompound(null);
+			stack.setItemDamage(0);
+		}else if(charge>=max){
+			stack.setTagCompound(null);
+			stack.setItemDamage(3);
+		}else{
+			if(!stack.hasTagCompound())
+				stack.setTagCompound(new NBTTagCompound());
+			stack.getTagCompound().setLong("charge", charge);
+			stack.setItemDamage((int)Math.round((((double)charge/max)*2)));
+		}
+	}
+	
+	@Override
 	public boolean canOutput() {
 		return true;
 	}
@@ -70,7 +87,7 @@ public class ItemBattery extends NTItem implements IEnergyItem{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
-		tooltip.add(I18n.format("tooltip.charge", this.getCurrentCharge(stack), this.getMaxCharge(stack)));
+		tooltip.add(I18n.format("tooltip.charge", this.getCharge(stack), this.getMaxCharge(stack)));
 	}
 	
 	@Override
