@@ -1,5 +1,6 @@
 package ru.andrey96.novatech.items;
 
+import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelBakery;
@@ -20,11 +21,13 @@ public class NTItem extends Item implements INTItem{
 		if(variants>1){
 			this.setHasSubtypes(true);
 			this.setMaxDamage(0);
-			String[] varr = new String[variants];
-			for(int i=0; i<variants; i++){
-				varr[i] = NovaTech.MODID+":"+name+i;
+			if(NTUtils.isClient()){
+				String[] varr = new String[variants];
+				for(int i=0; i<variants; i++){
+					varr[i] = NovaTech.MODID+":"+name+i;
+				}
+				ModelBakery.addVariantName(this, varr);
 			}
-			ModelBakery.addVariantName(this, varr);
 		}
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(NovaTech.creativeTab);

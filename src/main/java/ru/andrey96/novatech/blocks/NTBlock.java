@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class NTBlock extends Block implements INTBlock{
 
@@ -26,6 +28,7 @@ public class NTBlock extends Block implements INTBlock{
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		Item item = GameRegistry.findItem(NovaTech.MODID, this.getName());
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item, 0, new ModelResourceLocation(NovaTech.MODID+":"+this.getName(), "inventory"));

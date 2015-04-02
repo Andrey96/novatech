@@ -1,6 +1,7 @@
 package ru.andrey96.novatech.blocks;
 
-import ru.andrey96.novatech.blocks.machines.BlockMachine;
+import ru.andrey96.novatech.blocks.machines.BlockCrusher;
+import ru.andrey96.novatech.blocks.machines.BlockFurnace;
 
 public class NTBlocks {
 	
@@ -12,8 +13,8 @@ public class NTBlocks {
 	public NTBlocks(boolean isClient){
 		this.isClient = isClient;
 		blocks = new INTBlock[2];
-		blocks[0] = furnace = new BlockMachine("furnace");
-		blocks[1] = crusher = new BlockMachine("crusher");
+		blocks[0] = furnace = new BlockFurnace("furnace");
+		blocks[1] = crusher = new BlockCrusher("crusher");
 	}
 	
 	public void init(){

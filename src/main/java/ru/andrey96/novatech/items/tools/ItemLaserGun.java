@@ -15,6 +15,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import ru.andrey96.novatech.client.ClientEventHandler;
@@ -29,14 +31,15 @@ public class ItemLaserGun extends ItemEnergyTool{
 	
 	public ItemLaserGun(String name) {
 		super(name);
-		String[] varr = new String[6];
-		varr[0] = NovaTech.MODID+":"+name;
-		for(int i=0; i<5; i++){
-			varr[i+1] = NovaTech.MODID+":"+name+"_power"+i;
-		}
-		varr[5] = NovaTech.MODID+":"+name+"_empty";
-		if(NTUtils.isClient())
+		if(NTUtils.isClient()){
+			String[] varr = new String[6];
+			varr[0] = NovaTech.MODID+":"+name;
+			for(int i=0; i<5; i++){
+				varr[i+1] = NovaTech.MODID+":"+name+"_power"+i;
+			}
+			varr[5] = NovaTech.MODID+":"+name+"_empty";
 			ModelBakery.addVariantName(this, varr);
+		}
 	}
 
 	@Override
@@ -45,6 +48,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ModelResourceLocation getModel(ItemStack stack, EntityPlayer player, int useRemaining) {
 		long charge = this.getCharge(stack);
 		if(charge<powerConsumption[0])
@@ -88,6 +92,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels() {
 		super.registerModels();
 		for(int i=0; i<4; i++)

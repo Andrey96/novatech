@@ -1,5 +1,7 @@
 package ru.andrey96.novatech.blocks.machines;
 
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -10,10 +12,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.andrey96.novatech.blocks.NTBlock;
 
-public class BlockMachine extends NTBlock {
+public abstract class BlockMachine extends NTBlock {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool WORKING = PropertyBool.create("working");
@@ -56,5 +63,33 @@ public class BlockMachine extends NTBlock {
     {
         return new BlockState(this, new IProperty[] {FACING, WORKING});
     }
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if((boolean)state.getValue(WORKING)){
+			double x = pos.getX();
+            double y = pos.getY()+1+rand.nextFloat()/3;
+            double z = pos.getZ();
+            EnumFacing f = (EnumFacing)state.getValue(FACING);
+            if(f.getAxis()==Axis.X){
+            	x+=rand.nextFloat();
+            	if(f.getAxisDirection()==AxisDirection.POSITIVE)
+            		z+=rand.nextFloat()/3;
+            	else
+            		z+=1-rand.nextFloat()/3;
+            }else{
+            	z+=rand.nextFloat();
+            	if(f.getAxisDirection()==AxisDirection.POSITIVE)
+            		x+=1-rand.nextFloat()/3;
+            	else
+            		x+=rand.nextFloat()/3;
+            }
+            world.spawnParticle(getMachineParticle(), x, y, z, 0, 0, 0);
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	abstract EnumParticleTypes getMachineParticle();
 	
 }
