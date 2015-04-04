@@ -10,6 +10,7 @@ import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -18,15 +19,22 @@ import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.andrey96.novatech.api.IScrewable;
 import ru.andrey96.novatech.blocks.NTBlock;
 
-public abstract class BlockMachine extends NTBlock {
+public abstract class BlockMachine extends NTBlock implements IScrewable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool WORKING = PropertyBool.create("working");
 	
 	public BlockMachine(String name) {
 		super(name, Material.iron);
+	}
+	
+	@Override
+	public boolean onScrewed(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(FACING, player.getHorizontalFacing().rotateY()));
+		return true;
 	}
 	
 	@Override
