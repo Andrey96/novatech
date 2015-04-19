@@ -20,6 +20,7 @@ public class NTRecipes {
 	
 	public static void init(NTItems items, NTBlocks blocks) {
 		addChargeRecipe(items.lasergun);
+		addChargeRecipe(items.flashl);
 	}
 	
 }

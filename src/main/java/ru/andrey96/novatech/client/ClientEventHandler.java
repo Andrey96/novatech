@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
@@ -82,38 +83,36 @@ public class ClientEventHandler {
 	public void onPreRenderEntity(RenderLivingEvent.Pre event) {
 		if(event.entity!=null && event.entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer)event.entity;
-			if(player!=null){
-				ItemLaserGun.LaserShot shot = laserShots.get(player);
-				if(shot!=null){
-					if(--shot.renderFramesLeft==0)
-						laserShots.remove(player);
-					
-					Tessellator tes = Tessellator.getInstance();
-		            WorldRenderer wr = tes.getWorldRenderer();
-		            
-		            this.mc.getTextureManager().bindTexture(textureLaserRay);
-		            GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-	                GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-	                
-	                GlStateManager.disableLighting();
-	                GlStateManager.disableCull();
-	                GlStateManager.disableBlend();
-	                GlStateManager.pushMatrix();
-	                wr.startDrawingQuads();
-	                
-	                addRayVertexesWithUV(wr, shot.rayLength, .02);
-	                Vec3 start = player.getPositionEyes(NTUtils.getPartialTicks()).subtract(EntityFX.interpPosX, EntityFX.interpPosY+.8, EntityFX.interpPosZ);
-	                GL11.glTranslated(start.xCoord, start.yCoord, start.zCoord);
-	                GL11.glRotatef(360-player.rotationYaw, 0, 1, 0);
-	                GL11.glTranslatef(-.5f, 0, .5f);
-	                GL11.glRotatef(player.rotationPitch, 1, 0, 0);
-	                
-	                tes.draw();
-	                GlStateManager.popMatrix();
-	                GlStateManager.enableLighting();
-	                GlStateManager.enableCull();
-	                GlStateManager.enableBlend();
-				}
+			ItemLaserGun.LaserShot shot = laserShots.get(player);
+			if(shot!=null){
+				if(--shot.renderFramesLeft==0)
+					laserShots.remove(player);
+				
+				Tessellator tes = Tessellator.getInstance();
+	            WorldRenderer wr = tes.getWorldRenderer();
+	            
+	            this.mc.getTextureManager().bindTexture(textureLaserRay);
+	            GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+                GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+                
+                GlStateManager.disableLighting();
+                GlStateManager.disableCull();
+                GlStateManager.disableBlend();
+                GlStateManager.pushMatrix();
+                wr.startDrawingQuads();
+                
+                addRayVertexesWithUV(wr, shot.rayLength, .02);
+                Vec3 start = player.getPositionEyes(NTUtils.getPartialTicks()).subtract(EntityFX.interpPosX, EntityFX.interpPosY+.8, EntityFX.interpPosZ);
+                GL11.glTranslated(start.xCoord, start.yCoord, start.zCoord);
+                GL11.glRotatef(360-player.rotationYaw, 0, 1, 0);
+                GL11.glTranslatef(-.5f, 0, .5f);
+                GL11.glRotatef(player.rotationPitch, 1, 0, 0);
+                
+                tes.draw();
+                GlStateManager.popMatrix();
+                GlStateManager.enableLighting();
+                GlStateManager.enableCull();
+                GlStateManager.enableBlend();
 			}
 		}
 	}
@@ -122,6 +121,10 @@ public class ClientEventHandler {
 	public void onRenderHand(RenderHandEvent event) {
 		if(mc.gameSettings.thirdPersonView!=0) return;
 		EntityPlayer player = mc.thePlayer;
+		ItemStack curItem = player.getCurrentEquippedItem();
+		if(curItem!=null && curItem.getItem() instanceof ru.andrey96.novatech.items.tools.ItemFlashLight && curItem.hasTagCompound() && curItem.getTagCompound().getBoolean("flashl_on")){
+			NTUtils.resetEquipAnimation(); //Dirty hack to get rid of excess equip animations on charge update
+		}
 		ItemLaserGun.LaserShot shot = laserShots.get(player);
 		if(shot!=null) {
 			if(--shot.renderFramesLeft==0)

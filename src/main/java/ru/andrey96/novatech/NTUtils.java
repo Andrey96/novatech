@@ -5,6 +5,7 @@ import java.util.List;
 
 import ru.andrey96.novatech.api.IEnergyItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -26,12 +27,23 @@ public class NTUtils {
 	
 	@SideOnly(Side.CLIENT)
 	private static Timer timer;
+	@SideOnly(Side.CLIENT)
+	private static Field equippedProgress;
+	@SideOnly(Side.CLIENT)
+	private static ItemRenderer itemRenderer;
 	private static boolean client;
 	
-	static void init(boolean isClient) {
+	static void preInit(boolean isClient) {
 		client = isClient;
 		if(isClient){
 			timer = (Timer)getFieldVal(Minecraft.getMinecraft(), "field_71428_T", "timer");
+		}
+	}
+	
+	static void init() {
+		if(client){
+			itemRenderer = Minecraft.getMinecraft().getItemRenderer();
+			equippedProgress = getPrivateField(ItemRenderer.class, "field_78454_c", "equippedProgress");
 		}
 	}
 	
@@ -43,7 +55,38 @@ public class NTUtils {
 	}
 	
 	/**
-	 * Get field value from obj's class via reflection
+	 * Gets private field from given class via reflection
+	 * @param c Class to get field from
+	 * @param obfName obfuscated field name
+	 * @param deobfName development field name
+	 */
+	public static Field getPrivateField(Class c, String obfName, String deobfName) {
+		Field f;
+		try{
+			f = c.getDeclaredField(obfName);
+		}catch(Exception ex){
+			try{
+				f = c.getDeclaredField(deobfName);
+			}catch(Exception ex2){
+				FMLLog.severe("Can't find %s(%s) field in %s class! Stopping the game.", deobfName, obfName, c.getSimpleName());
+				ex2.printStackTrace();
+				FMLCommonHandler.instance().exitJava(0, false);
+				return null;
+			}
+		}
+		try{
+			f.setAccessible(true);
+			return f;
+		}catch(Exception ex){
+			FMLLog.severe("Can't access %s(%s) field in %s class! Stopping the game.", deobfName, obfName, c.getSimpleName());
+			ex.printStackTrace();
+			FMLCommonHandler.instance().exitJava(0, false);
+			return null;
+		}
+	}
+	
+	/**
+	 * Gets field value from obj's class via reflection
 	 * @param obj object to get field from
 	 * @param obfName obfuscated field name
 	 * @param deobfName development field name
@@ -80,6 +123,17 @@ public class NTUtils {
 	@SideOnly(Side.CLIENT)
 	public static float getPartialTicks() {
 		return timer.renderPartialTicks;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void resetEquipAnimation() {
+		try {
+			equippedProgress.set(itemRenderer, 1f);
+		} catch (Exception ex) {
+			FMLLog.severe("Can't set equippedProgress field's value in ItemRenderer class.");
+			ex.printStackTrace();
+			FMLCommonHandler.instance().exitJava(0, false);
+		}
 	}
 	
 	/**

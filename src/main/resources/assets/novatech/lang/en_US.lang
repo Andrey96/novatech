@@ -2,6 +2,7 @@ itemGroup.novatech=NovaTech
 
 item.screwdr.name=Screwdriver
 item.lasergun.name=Laser gun
+item.flashl.name=Flashlight
 
 item.battery.name=Energy cell
 item.battery_full.name=Energy cell (full)
