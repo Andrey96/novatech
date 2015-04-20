@@ -6,8 +6,8 @@ itemGroup.novatech=NovaTech
 item.screwdr.name=Screwdriver
 item.lasergun.name=Laser gun
 item.flashl.name=Flashlight
-item.flashl.state0=Normal (1EU/t)
-item.flashl.state1=Bright (3EU/t)
+item.flashl.state0=Normal (1 EU/t)
+item.flashl.state1=Bright (3 EU/t)
 
 item.battery.name=Energy cell
 item.battery_full.name=Energy cell (full)
@@ -17,5 +17,5 @@ item.batpack_full.name=Energy cell pack (full)
 
 tile.crusher.name=Crusher
 
-tooltip.charge=Charge: %d/%dEU
+tooltip.charge=Charge: %d/%d EU
 tooltip.state=State: %s

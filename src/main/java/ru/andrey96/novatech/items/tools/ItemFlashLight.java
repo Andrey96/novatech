@@ -22,8 +22,11 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 	
 	public ItemFlashLight(String name) {
 		super(name);
-		if(NTUtils.isClient())
+		if(NTUtils.isClient()){
 			ModelBakery.addVariantName(this, new String[]{ NovaTech.MODID+":"+name, NovaTech.MODID+":"+name+"_on" });
+			ModelBakery.addVariantName(this, new String[]{ NovaTech.MODID+":"+name, NovaTech.MODID+":"+name+"_p" });
+			ModelBakery.addVariantName(this, new String[]{ NovaTech.MODID+":"+name, NovaTech.MODID+":"+name+"_p_on" });
+		}
 	}
 	
 	@Override
@@ -94,7 +97,6 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 
 	@Override
 	public void onStateSwitch(ItemStack ist, EntityPlayer player) {
-		System.out.println("State switched!");
 		if(!player.worldObj.isRemote){
 			NBTTagCompound nbt = ist.getTagCompound();
 			if(nbt==null)
