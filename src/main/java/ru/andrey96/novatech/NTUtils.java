@@ -146,7 +146,7 @@ public class NTUtils {
 	 */
 	public static MovingObjectPosition rayTrace(Entity entity, double distance, boolean air) {
 		//Tracing blocks
-		Vec3 vec3 = new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+		Vec3 vec3 = getEyesPos(entity);
         Vec3 look = entity.getLook(1f);
         Vec3 trace = vec3.addVector(look.xCoord * distance, look.yCoord * distance, look.zCoord * distance);
         MovingObjectPosition objectMouseOver = entity.worldObj.rayTraceBlocks(vec3, trace, false, true, true);
@@ -206,7 +206,7 @@ public class NTUtils {
 	 * @return Vec3 with eye's coordinates
 	 */
 	public static Vec3 getEyesPos(Entity ent) {
-		return new Vec3(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ);
+		return new Vec3(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
 	}
 	
 }

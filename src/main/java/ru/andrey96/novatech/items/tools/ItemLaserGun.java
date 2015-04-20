@@ -8,6 +8,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
@@ -21,6 +22,8 @@ import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.items.NTItem;
+import ru.andrey96.novatech.network.ChannelHanlderServer;
+import ru.andrey96.novatech.network.server.PacketS00LaserShot;
 import ru.andrey96.novatech.recipes.NTRecipes;
 
 public class ItemLaserGun extends ItemEnergyTool{
@@ -118,25 +121,18 @@ public class ItemLaserGun extends ItemEnergyTool{
 		}
 		
 		public void process() {
-	        MovingObjectPosition obj = NTUtils.rayTrace(player, laserReachDistance[tier]);
-			Vec3 point;
-	        if(obj!=null && obj.typeOfHit!=MovingObjectType.MISS){
-				point = obj.hitVec;
-			}else{
-				Vec3 look = player.getLookVec();
-				double reach = laserReachDistance[tier];
-				point = NTUtils.getEyesPos(player).addVector(look.xCoord*reach, look.yCoord*reach, look.zCoord*reach);
-			}
+	        MovingObjectPosition obj = NTUtils.rayTrace(player, laserReachDistance[tier], true);
+			Vec3 point = obj.hitVec;
 			if(player.worldObj.isRemote){
 				rayLength = point.subtract(player.getPositionEyes(1f)).lengthVector();
 				ClientEventHandler.addLaserShot(this);
 			}else{
-				if(obj==null || obj.typeOfHit==MovingObjectType.BLOCK || tier==3){
-					if(tier==3)
-						player.worldObj.createExplosion(player, point.xCoord, point.yCoord, point.zCoord, 8f, true);
-				}else if(obj.typeOfHit==MovingObjectType.ENTITY && obj.entityHit!=null){
-					obj.entityHit.attackEntityFrom(DamageSource.lightningBolt, laserDamage[tier]);
-				}
+				ChannelHanlderServer.broadcastPacketRange(new PacketS00LaserShot(player, tier), player, 128, player);
+			}
+			if(tier==3){
+				player.worldObj.createExplosion(player, point.xCoord, point.yCoord, point.zCoord, 8f, true);
+			}else if(obj.typeOfHit==MovingObjectType.ENTITY && obj.entityHit!=null){
+				obj.entityHit.attackEntityFrom(DamageSource.lightningBolt, laserDamage[tier]);
 			}
 		}
 	}

@@ -14,6 +14,8 @@ import ru.andrey96.novatech.blocks.NTBlocks;
 import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.integration.AbstractNTModule;
 import ru.andrey96.novatech.items.NTItems;
+import ru.andrey96.novatech.network.ChannelHanlderClient;
+import ru.andrey96.novatech.network.ChannelHanlderServer;
 import ru.andrey96.novatech.recipes.NTRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -27,6 +29,7 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid=NovaTech.MODID, dependencies = "after:DynamicLights")
@@ -97,6 +100,9 @@ public class NovaTech {
 		NTRecipes.init(items, blocks);
 		if(event.getSide()==Side.CLIENT){
 			MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+			NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHanlderClient());
+		}else{
+			NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHanlderServer());
 		}
 		for(AbstractNTModule module : modules)
 			module.init(event);
