@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Timer;
@@ -140,9 +141,10 @@ public class NTUtils {
 	 * Performs a ray cast over blocks and entities
 	 * @param entity entity that points
 	 * @param distance scan distance
-	 * @return Object, entity is pointing to or null if entity is pointing to air
+	 * @param air should function return air's block pos intstead of null if nothing found
+	 * @return Object, entity is pointing to or null (air block's pos if air is true) if entity is pointing to air
 	 */
-	public static MovingObjectPosition rayTrace(Entity entity, double distance) {
+	public static MovingObjectPosition rayTrace(Entity entity, double distance, boolean air) {
 		//Tracing blocks
 		Vec3 vec3 = new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
         Vec3 look = entity.getLook(1f);
@@ -190,9 +192,10 @@ public class NTUtils {
             }
         }
         
-        //Return entity (if closer) or block position or null if nothing found
         if (pointedEntity != null && (d2 < d1 || objectMouseOver == null))
             return new MovingObjectPosition(pointedEntity, vec33);
+        if(objectMouseOver == null && air)
+        	return new MovingObjectPosition(trace, null, new BlockPos(trace));
         return objectMouseOver;
 	}
     

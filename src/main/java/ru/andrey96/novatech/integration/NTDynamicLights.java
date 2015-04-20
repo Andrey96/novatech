@@ -43,12 +43,13 @@ public class NTDynamicLights extends AbstractNTModule{
 		
 	}
 	
-	public static class FlashlightAdapter implements IDynamicLightSource{
+	public static class FlashLightAdapter implements IDynamicLightSource{
 		
 		public final Entity dummy;
 		public Entity point;
+		public boolean state;
 		
-		public FlashlightAdapter(World world){
+		public FlashLightAdapter(World world){
 			point = dummy = new DummyEntity(world);
 		}
 		
@@ -59,13 +60,13 @@ public class NTDynamicLights extends AbstractNTModule{
 
 		@Override
 		public int getLightLevel() {
-			return 15;
+			return ItemFlashLight.getLightLevel(state);
 		}
 		
 	}
 	
 	private Minecraft mc;
-	private HashMap<EntityPlayer, FlashlightAdapter> map;
+	private HashMap<EntityPlayer, FlashLightAdapter> map;
 	
 	@Override
 	public String getDependentModId() {
@@ -76,7 +77,7 @@ public class NTDynamicLights extends AbstractNTModule{
 	public void init(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		mc = Minecraft.getMinecraft();
-		map = new HashMap<EntityPlayer, FlashlightAdapter>();
+		map = new HashMap<EntityPlayer, FlashLightAdapter>();
 	}
 	
 	@SubscribeEvent
@@ -94,24 +95,20 @@ public class NTDynamicLights extends AbstractNTModule{
 	private void handleFlashlight(EntityPlayer player){
 		ItemStack ist = player.getCurrentEquippedItem();
 		if(ist!=null && ist.getItem() instanceof ru.andrey96.novatech.items.tools.ItemFlashLight && ist.hasTagCompound() && ist.getTagCompound().getBoolean("flashl_on")){
-			FlashlightAdapter adapter = map.get(player);
+			FlashLightAdapter adapter = map.get(player);
 			if(adapter == null){
-				adapter = new FlashlightAdapter(player.worldObj);
+				adapter = new FlashLightAdapter(player.worldObj);
 				DynamicLights.addLightSource(adapter);
 				map.put(player, adapter);
 			}
-			MovingObjectPosition mop = NTUtils.rayTrace(player, ItemFlashLight.lightRange);
-			if(mop==null){
+			adapter.state = ist.getTagCompound().getBoolean("flashl_p");
+			MovingObjectPosition mop = NTUtils.rayTrace(player, ItemFlashLight.lightRange, true);
+			if(mop.typeOfHit == MovingObjectType.BLOCK){
 				adapter.point = adapter.dummy;
-				adapter.dummy.setPosition(0, 0, 0);
+				BlockPos pos = mop.getBlockPos();
+				adapter.dummy.setPosition(pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5);
 			}else{
-				if(mop.typeOfHit == MovingObjectType.BLOCK){
-					adapter.point = adapter.dummy;
-					BlockPos pos = mop.getBlockPos();
-					adapter.dummy.setPosition(pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5);
-				}else{
-					adapter.point = mop.entityHit;
-				}
+				adapter.point = mop.entityHit;
 			}
 		}else if(map.containsKey(player)){
 			DynamicLights.removeLightSource(map.remove(player));
