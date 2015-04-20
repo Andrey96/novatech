@@ -1,5 +1,6 @@
 package ru.andrey96.novatech.network;
 
+import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.network.server.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Packet;
@@ -27,7 +28,7 @@ public class ChannelHanlderClient extends SimpleChannelInboundHandler<FMLProxyPa
 			case 0x00:
 				return new PacketS00LaserShot();
 			default:
-				throw new Exception("Server packet "+Integer.toHexString(Byte.toUnsignedInt(id))+" not found");
+				throw new Exception("Server packet "+NTUtils.byteToHexString(id)+" not found");
 		}
 	}
 	

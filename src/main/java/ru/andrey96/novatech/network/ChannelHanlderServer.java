@@ -2,6 +2,7 @@ package ru.andrey96.novatech.network;
 
 import java.util.List;
 
+import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.network.client.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,7 +35,7 @@ public class ChannelHanlderServer extends SimpleChannelInboundHandler<FMLProxyPa
 			case 0x00:
 				return new PacketC00StateSwitch();
 			default:
-				throw new Exception("Client packet "+Integer.toHexString(Byte.toUnsignedInt(id))+" not found");
+				throw new Exception("Client packet "+NTUtils.byteToHexString(id)+" not found");
 		}
 	}
 	

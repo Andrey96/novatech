@@ -33,6 +33,7 @@ public class NTUtils {
 	@SideOnly(Side.CLIENT)
 	private static ItemRenderer itemRenderer;
 	private static boolean client;
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	
 	static void preInit(boolean isClient) {
 		client = isClient;
@@ -209,4 +210,8 @@ public class NTUtils {
 		return new Vec3(ent.posX, ent.posY + ent.getEyeHeight(), ent.posZ);
 	}
 	
+	public static String byteToHexString(byte b) {
+		int v = b & 0xFF;
+		return new String(new char[]{ hexArray[v >>> 4], hexArray[v & 0x0F] });
+	}
 }
