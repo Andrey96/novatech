@@ -27,6 +27,11 @@ public class PacketS00LaserShot extends AbstractNTPacket{
 	}
 	
 	@Override
+	public byte getPacketId() {
+		return 0x00;
+	}
+	
+	@Override
 	public void readData(ByteBuf payload) {
 		shooter = (EntityPlayer)Minecraft.getMinecraft().theWorld.getEntityByID(payload.readInt());
 		tier = payload.readByte();
@@ -34,10 +39,7 @@ public class PacketS00LaserShot extends AbstractNTPacket{
 
 	@Override
 	public ByteBuf writeData() {
-		ByteBuf buf = Unpooled.buffer();
-		buf.writeInt(shooter.getEntityId());
-		buf.writeByte(tier);
-		return buf;
+		return super.writeData().writeInt(shooter.getEntityId()).writeByte(tier);
 	}
 
 	@Override

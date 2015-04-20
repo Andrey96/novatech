@@ -31,9 +31,10 @@ public class ChannelHanlderServer extends SimpleChannelInboundHandler<FMLProxyPa
 
 	private AbstractNTPacket getClientPacket(byte id) throws Exception{
 		switch(id){
-			
+			case 0x00:
+				return new PacketC00StateSwitch();
 			default:
-				throw new Exception("Server packet "+Integer.toHexString(Byte.toUnsignedInt(id))+" not found");
+				throw new Exception("Client packet "+Integer.toHexString(Byte.toUnsignedInt(id))+" not found");
 		}
 	}
 	

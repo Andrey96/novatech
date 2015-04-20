@@ -105,7 +105,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 	
 	public static class LaserShot {
 		
-		private static final float[] laserReachDistance = new float[]{ 8f, 16f, 32f, 64f };
+		private static final float[] laserReachDistance = new float[]{ 8f, 16f, 32f, 48f };
 		private static final float[] laserDamage = new float[]{ 4f, 7f, 10f };
 		
 		public EntityPlayer player;

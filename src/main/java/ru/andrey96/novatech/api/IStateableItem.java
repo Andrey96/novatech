@@ -2,6 +2,8 @@ package ru.andrey96.novatech.api;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IStateableItem {
 	
@@ -11,5 +13,8 @@ public interface IStateableItem {
 	 * @param player Player that performed action
 	 */
 	public void onStateSwitch(ItemStack ist, EntityPlayer player);
+	
+	@SideOnly(Side.CLIENT)
+	public String getStateName(ItemStack ist, EntityPlayer player, boolean advanced);
 	
 }

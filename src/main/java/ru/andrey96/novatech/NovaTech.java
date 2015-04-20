@@ -12,6 +12,7 @@ import com.google.common.reflect.ClassPath;
 
 import ru.andrey96.novatech.blocks.NTBlocks;
 import ru.andrey96.novatech.client.ClientEventHandler;
+import ru.andrey96.novatech.client.KeyBindings;
 import ru.andrey96.novatech.integration.AbstractNTModule;
 import ru.andrey96.novatech.items.NTItems;
 import ru.andrey96.novatech.network.ChannelHanlderClient;
@@ -100,10 +101,10 @@ public class NovaTech {
 		NTRecipes.init(items, blocks);
 		if(event.getSide()==Side.CLIENT){
 			MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-			NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHanlderClient());
-		}else{
-			NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHanlderServer());
+			FMLCommonHandler.instance().bus().register(new KeyBindings());
 		}
+		NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHanlderClient());
+		NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHanlderServer());
 		for(AbstractNTModule module : modules)
 			module.init(event);
 	}

@@ -94,12 +94,20 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 
 	@Override
 	public void onStateSwitch(ItemStack ist, EntityPlayer player) {
+		System.out.println("State switched!");
 		if(!player.worldObj.isRemote){
 			NBTTagCompound nbt = ist.getTagCompound();
 			if(nbt==null)
 				ist.setTagCompound(nbt = new NBTTagCompound());
 			nbt.setBoolean("flashl_p", !nbt.getBoolean("flashl_p"));
 		}
+	}
+
+	@Override
+	public String getStateName(ItemStack ist, EntityPlayer player, boolean advanced) {
+		if(ist.hasTagCompound() && ist.getTagCompound().getBoolean("flashl_p"))
+			return "item.flashl.state1";
+		return "item.flashl.state0";
 	}
 	
 }

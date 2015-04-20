@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.andrey96.novatech.api.IEnergyItem;
+import ru.andrey96.novatech.api.IStateableItem;
 import ru.andrey96.novatech.items.NTItem;
 
 public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
@@ -74,6 +75,9 @@ public abstract class ItemEnergyTool extends NTItem implements IEnergyItem{
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
 		tooltip.add(I18n.format("tooltip.charge", this.getCharge(stack), this.getMaxCharge(stack)));
+		if(this instanceof IStateableItem){
+			tooltip.add(I18n.format("tooltip.state", I18n.format(((IStateableItem)this).getStateName(stack, playerIn, advanced))));
+		}
 	}
 	
 	@Override
