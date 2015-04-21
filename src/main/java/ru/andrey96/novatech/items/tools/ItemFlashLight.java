@@ -66,7 +66,7 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 	 * @return light level based on state
 	 */
 	public static int getLightLevel(boolean state){
-		return state?15:8;
+		return state?15:10;
 	}
 	
 	@Override

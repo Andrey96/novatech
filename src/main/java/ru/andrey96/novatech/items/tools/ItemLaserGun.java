@@ -30,7 +30,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 
 	private final ModelResourceLocation[] usageModels = new ModelResourceLocation[5];
 	private static final int[] usageDelays = new int[]{ 0, 15, 35, 60 };
-	private static final int[] powerConsumption = new int[]{ 800, 1800, 4000, 10000 };
+	private static final int[] powerConsumption = new int[]{ 400, 600, 1600, 10000 };
 	
 	public ItemLaserGun(String name) {
 		super(name);
