@@ -4,14 +4,17 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import ru.andrey96.novatech.api.IEnergyItem;
+import ru.andrey96.novatech.api.IStateableItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Timer;
@@ -214,4 +217,10 @@ public class NTUtils {
 		int v = b & 0xFF;
 		return new String(new char[]{ hexArray[v >>> 4], hexArray[v & 0x0F] });
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public static void chatMessage(String text){
+		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(text));
+	}
+	
 }

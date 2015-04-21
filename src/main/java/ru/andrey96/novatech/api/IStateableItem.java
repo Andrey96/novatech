@@ -14,6 +14,8 @@ public interface IStateableItem {
 	 */
 	public void onStateSwitch(ItemStack ist, EntityPlayer player);
 	
+	public boolean canSwitchState(ItemStack ist, EntityPlayer player);
+	
 	@SideOnly(Side.CLIENT)
 	public String getStateName(ItemStack ist, EntityPlayer player, boolean advanced);
 	

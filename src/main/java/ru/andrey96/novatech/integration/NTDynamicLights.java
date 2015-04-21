@@ -3,6 +3,7 @@ package ru.andrey96.novatech.integration;
 import java.util.HashMap;
 
 import ru.andrey96.novatech.NTUtils;
+import ru.andrey96.novatech.items.armor.ItemPoweredArmor;
 import ru.andrey96.novatech.items.tools.ItemFlashLight;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -43,6 +44,27 @@ public class NTDynamicLights extends AbstractNTModule{
 		
 	}
 	
+	public static class HelmetAdapter implements IDynamicLightSource{
+
+		public final Entity dummy;
+		public Entity point;
+		
+		public HelmetAdapter(World world){
+			point = dummy = new DummyEntity(world);
+		}
+		
+		@Override
+		public Entity getAttachmentEntity() {
+			return point;
+		}
+
+		@Override
+		public int getLightLevel() {
+			return 15;
+		}
+		
+	}
+	
 	public static class FlashLightAdapter implements IDynamicLightSource{
 		
 		public final Entity dummy;
@@ -67,6 +89,7 @@ public class NTDynamicLights extends AbstractNTModule{
 	
 	private Minecraft mc;
 	private HashMap<EntityPlayer, FlashLightAdapter> map;
+	private HashMap<EntityPlayer, HelmetAdapter> map2;
 	
 	@Override
 	public String getDependentModId() {
@@ -78,6 +101,7 @@ public class NTDynamicLights extends AbstractNTModule{
 		MinecraftForge.EVENT_BUS.register(this);
 		mc = Minecraft.getMinecraft();
 		map = new HashMap<EntityPlayer, FlashLightAdapter>();
+		map2 = new HashMap<EntityPlayer, HelmetAdapter>();
 	}
 	
 	@SubscribeEvent
@@ -93,8 +117,9 @@ public class NTDynamicLights extends AbstractNTModule{
 	}
 	
 	private void handleFlashlight(EntityPlayer player){
+		//Equipped tool
 		ItemStack ist = player.getCurrentEquippedItem();
-		if(ist!=null && ist.getItem() instanceof ru.andrey96.novatech.items.tools.ItemFlashLight && ist.hasTagCompound() && ist.getTagCompound().getBoolean("flashl_on")){
+		if(ist!=null && ist.getItem() instanceof ItemFlashLight && ist.hasTagCompound() && ist.getTagCompound().getBoolean("flashl_on")){
 			FlashLightAdapter adapter = map.get(player);
 			if(adapter == null){
 				adapter = new FlashLightAdapter(player.worldObj);
@@ -112,6 +137,35 @@ public class NTDynamicLights extends AbstractNTModule{
 			}
 		}else if(map.containsKey(player)){
 			DynamicLights.removeLightSource(map.remove(player));
+		}
+		//Helmet
+		ist = player.getCurrentArmor(3);
+		if(ist!=null && ist.getItem() instanceof ItemPoweredArmor && ist.hasTagCompound() && ((ItemPoweredArmor)ist.getItem()).armorType==0){
+			byte mode = ist.getTagCompound().getByte("flashl_mode");
+			if(mode!=0){
+				HelmetAdapter adapter = map2.get(player);
+				if(adapter == null){
+					adapter = new HelmetAdapter(player.worldObj);
+					DynamicLights.addLightSource(adapter);
+					map2.put(player, adapter);
+				}
+				if(mode==1){ //Floodlight
+					adapter.point = player;
+				}else{ //Spotlight
+					MovingObjectPosition mop = NTUtils.rayTrace(player, ItemFlashLight.lightRange, true);
+					if(mop.typeOfHit == MovingObjectType.BLOCK){
+						adapter.point = adapter.dummy;
+						BlockPos pos = mop.getBlockPos();
+						adapter.dummy.setPosition(pos.getX()+.5, pos.getY()+.5, pos.getZ()+.5);
+					}else{
+						adapter.point = mop.entityHit;
+					}
+				}
+			}else if(map2.containsKey(player)){
+				DynamicLights.removeLightSource(map2.remove(player));
+			}
+		}else if(map2.containsKey(player)){
+			DynamicLights.removeLightSource(map2.remove(player));
 		}
 	}
 	

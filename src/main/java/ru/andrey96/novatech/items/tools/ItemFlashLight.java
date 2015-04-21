@@ -18,7 +18,7 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 
 	public static final byte lightRange = 32;
 	private static ModelResourceLocation modelOn, modelP, modelPOn;
-	private static byte updateCounter = 0;
+	private byte updateCounter = 0;
 	
 	public ItemFlashLight(String name) {
 		super(name);
@@ -97,19 +97,23 @@ public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 
 	@Override
 	public void onStateSwitch(ItemStack ist, EntityPlayer player) {
-		if(!player.worldObj.isRemote){
-			NBTTagCompound nbt = ist.getTagCompound();
-			if(nbt==null)
-				ist.setTagCompound(nbt = new NBTTagCompound());
-			nbt.setBoolean("flashl_p", !nbt.getBoolean("flashl_p"));
-		}
+		NBTTagCompound nbt = ist.getTagCompound();
+		if(nbt==null)
+			ist.setTagCompound(nbt = new NBTTagCompound());
+		nbt.setBoolean("flashl_p", !nbt.getBoolean("flashl_p"));
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public String getStateName(ItemStack ist, EntityPlayer player, boolean advanced) {
 		if(ist.hasTagCompound() && ist.getTagCompound().getBoolean("flashl_p"))
 			return "item.flashl.state1";
 		return "item.flashl.state0";
+	}
+
+	@Override
+	public boolean canSwitchState(ItemStack ist, EntityPlayer player) {
+		return true;
 	}
 	
 }

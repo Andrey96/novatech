@@ -1,5 +1,5 @@
 key.categories.novat=NovaTech
-nt.key.stateswitch=Tool state switch
+nt.key.stateswitch=Tool/armor state switch
 
 itemGroup.novatech=NovaTech
 
@@ -15,7 +15,22 @@ item.battery_full.name=Energy cell (full)
 item.batpack.name=Energy cell pack
 item.batpack_full.name=Energy cell pack (full)
 
+item.power_helmet.name=Power helmet
+item.power_helmet.state0=Light off
+item.power_helmet.state1=Floodlight (1 EU/t)
+item.power_helmet.state2=Spotlight (2 EU/t)
+item.power_chestplate.name=Power chestplate
+item.power_leggings.name=Power leggings
+item.power_boots.name=Power boots
+
 tile.crusher.name=Crusher
 
 tooltip.charge=Charge: %d/%d EU
 tooltip.state=State: %s
+
+message.state_not_switched=Can't switch state now
+message.state=Equipment state: %s
+message.state0=Helmet state: %s
+message.state1=Chestplate state: %s
+message.state2=Leggings state: %s
+message.state3=Boots state: %s

@@ -82,12 +82,12 @@ public class NovaTech {
 		                }
 					}
 				}catch(Throwable th){
-					FMLLog.log(Level.ERROR, "Failed to load module %s!", ci.getSimpleName());
+					FMLLog.log(Level.ERROR, "[NovaTech] Failed to load module %s!", ci.getSimpleName());
 				}
             }
-			FMLLog.log(Level.INFO, "Succesfully loaded %d modules", modules.size());
+			FMLLog.log(Level.INFO, "[NovaTech] Succesfully loaded %d modules", modules.size());
 		} catch (Exception ex) {
-			FMLLog.log(Level.FATAL, "Failed to fetch module classes!");
+			FMLLog.log(Level.FATAL, "[NovaTech] Failed to fetch module classes!");
 			ex.printStackTrace();
 		}
     }
@@ -103,6 +103,7 @@ public class NovaTech {
 			MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
 			FMLCommonHandler.instance().bus().register(new KeyBindings());
 		}
+		MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
 		NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHanlderClient());
 		NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHanlderServer());
 		for(AbstractNTModule module : modules)
