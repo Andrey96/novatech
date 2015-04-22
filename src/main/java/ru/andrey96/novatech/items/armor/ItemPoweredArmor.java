@@ -90,18 +90,44 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 	public void onStateSwitch(ItemStack ist, EntityPlayer player) {
 		if(!ist.hasTagCompound())
 			ist.setTagCompound(new NBTTagCompound());
-		byte mode = ist.getTagCompound().getByte("flashl_mode");
-		if(++mode==3) mode = 0;
-		ist.getTagCompound().setByte("flashl_mode", mode);
+		switch(this.armorType){
+			case 0:
+				byte mode = ist.getTagCompound().getByte("flashl_mode");
+				if(++mode==3) mode = 0;
+				ist.getTagCompound().setByte("flashl_mode", mode);
+				break;
+			case 1:
+				ist.getTagCompound().setBoolean("chestplate_p", !ist.getTagCompound().getBoolean("chestplate_p"));
+				break;
+			case 2:
+				ist.getTagCompound().setBoolean("leggings_p", !ist.getTagCompound().getBoolean("leggings_p"));
+				break;
+			case 3:
+				ist.getTagCompound().setBoolean("boots_p", !ist.getTagCompound().getBoolean("boots_p"));
+				break;
+		}
 	}
 	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public String getStateName(ItemStack ist, EntityPlayer player, boolean advanced) {
-		if(this.armorType==0){
-			if(ist.hasTagCompound())
-				return "item.power_helmet.state"+ist.getTagCompound().getByte("flashl_mode");
-			return "item.power_helmet.state0";
+		switch(this.armorType){
+			case 0:
+				if(ist.hasTagCompound())
+					return "item.power_helmet.state"+ist.getTagCompound().getByte("flashl_mode");
+				return "item.power_helmet.state0";
+			case 1:
+				if(ist.hasTagCompound())
+					return "item.power_chestplate.state"+(ist.getTagCompound().getBoolean("chestplate_p")?1:0);
+				return "item.power_chestplate.state0";
+			case 2:
+				if(ist.hasTagCompound())
+					return "item.power_leggings.state"+(ist.getTagCompound().getBoolean("leggings_p")?1:0);
+				return "item.power_leggings.state0";
+			case 3:
+				if(ist.hasTagCompound())
+					return "item.power_boots.state"+(ist.getTagCompound().getBoolean("boots_p")?1:0);
+				return "item.power_boots.state0";
 		}
 		return null;
 	}
@@ -109,7 +135,6 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 	@Override
 	public void onArmorUpdateTick(EntityPlayer player, ItemStack stack, int armorSlot) {
 		if(!player.worldObj.isRemote && updateCounter++==20){
-			System.out.println("test");
 			updateCounter = 0;
 			if(3-this.armorType==armorSlot){ //Checking just in case, we don't want armor to work if it's in a wrong slot
 				switch(this.armorType){
@@ -119,7 +144,13 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 							 if(mode!=0 && modifyCharge(stack, mode==1?20:40, true)!=0)
 								 stack.getTagCompound().setByte("flashl_mode", (byte)0);
 						}
-					break;
+						break;
+					case 2: //Leggings
+						if(stack.hasTagCompound() && player.isSprinting()){
+							if(stack.getTagCompound().getBoolean("leggings_p") && modifyCharge(stack, 160, true)!=0)
+								stack.getTagCompound().setBoolean("leggings_p", false);
+						}
+						break;
 				}
 			}
 		}
@@ -138,7 +169,7 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 
 	@Override
 	public boolean canSwitchState(ItemStack ist, EntityPlayer player) {
-		return this.getCharge(ist)!=0;
+		return this.armorType==1 || this.getCharge(ist)!=0;
 	}
 
 }

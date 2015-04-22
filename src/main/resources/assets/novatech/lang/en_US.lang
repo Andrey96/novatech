@@ -20,8 +20,14 @@ item.power_helmet.state0=Light off
 item.power_helmet.state1=Floodlight (1 EU/t)
 item.power_helmet.state2=Spotlight (2 EU/t)
 item.power_chestplate.name=Power chestplate
+item.power_chestplate.state0=Normal (-65%% damage, 100 EU per 1 HP)
+item.power_chestplate.state1=Heavy (-100%% damage, 250 EU per 1 HP)
 item.power_leggings.name=Power leggings
+item.power_leggings.state0=Normal
+item.power_leggings.state1=Swift (2x sprint speed with 8 EU/t)
 item.power_boots.name=Power boots
+item.power_boots.state0=Normal
+item.power_boots.state1=Bouncy (4x height jump, 800 EU per jump)
 
 tile.crusher.name=Crusher
 
