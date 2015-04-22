@@ -27,6 +27,7 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		if(event.entityLiving instanceof EntityPlayer && event.source!=null){
+			System.out.println("living hurt");
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
 			ItemStack helmet = player.getCurrentArmor(3);
 			boolean h = helmet!=null && helmet.getItem() instanceof ItemPoweredArmor;

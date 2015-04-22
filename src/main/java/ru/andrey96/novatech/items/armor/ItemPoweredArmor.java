@@ -42,7 +42,7 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(charge<=0){
 			if(force || charge==0){
 				stack.getTagCompound().setLong("charge", 0);
-				stack.setItemDamage(100);
+				//stack.setItemDamage(100);
 			}
 			return charge;
 		}
@@ -50,12 +50,12 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(charge>=max){
 			if(force || charge==max){
 				stack.getTagCompound().setLong("charge", max);
-				stack.setItemDamage(1);
+				//stack.setItemDamage(1);
 			}
 			return charge-max;
 		}
 		stack.getTagCompound().setLong("charge", charge);
-		stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
+		//stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
 		return 0;
 	}
 	
@@ -69,7 +69,7 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setLong("charge", charge);
-		stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
+		//stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
 	}
 	
 	@Override
