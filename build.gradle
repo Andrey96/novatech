@@ -34,7 +34,7 @@ group= "ru.andrey96.novatech" // http://maven.apache.org/guides/mini/guide-namin
 archivesBaseName = "novatech-1.8-build"
 
 minecraft {
-    version = "1.8-11.14.1.1341"
+    version = "1.8-11.14.1.1375"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
