@@ -35,6 +35,8 @@ public class ClientEventHandler {
 	
 	private static final HashMap<EntityPlayer, ItemLaserGun.LaserShot> laserShots = new HashMap<>();
 	private static final ResourceLocation textureLaserRay = new ResourceLocation(NovaTech.MODID, "textures/misc/laser_ray.png");
+	private int equipAnimCooldown = -1;
+	private boolean prevFlashLightState = false;
 	
 	private final Minecraft mc;
 	
@@ -123,7 +125,19 @@ public class ClientEventHandler {
 		EntityPlayer player = mc.thePlayer;
 		ItemStack curItem = player.getCurrentEquippedItem();
 		if(curItem!=null && curItem.getItem() instanceof ru.andrey96.novatech.items.tools.ItemFlashLight && curItem.hasTagCompound() && curItem.getTagCompound().getBoolean("flashl_on")){
-			NTUtils.resetEquipAnimation(); //Dirty hack to get rid of excess equip animations on charge update
+			boolean flashLightState = curItem.getTagCompound().getBoolean("flashl_p");
+			if(prevFlashLightState!=flashLightState){
+				equipAnimCooldown = -1;
+				prevFlashLightState=flashLightState;
+			}
+			if(equipAnimCooldown==0)
+				NTUtils.resetEquipAnimation(); //Dirty hack to get rid of excess equip animations on charge update
+			else if(equipAnimCooldown==-1)
+				equipAnimCooldown=mc.getDebugFPS()/2;
+			else
+				--equipAnimCooldown;
+		}else{
+			equipAnimCooldown = -1;
 		}
 		ItemLaserGun.LaserShot shot = laserShots.get(player);
 		if(shot!=null) {
