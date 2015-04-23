@@ -172,4 +172,14 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		return this.armorType==1 || this.getCharge(ist)!=0;
 	}
 
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return true;
+	}
+	
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		return 1-this.getCharge(stack)/(double)this.getMaxCharge(stack);
+	}
+	
 }
