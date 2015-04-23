@@ -4,12 +4,15 @@ import java.util.List;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import ru.andrey96.novatech.api.IEnergyItem;
 import ru.andrey96.novatech.api.IStateableItem;
@@ -100,7 +103,15 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 				ist.getTagCompound().setBoolean("chestplate_p", !ist.getTagCompound().getBoolean("chestplate_p"));
 				break;
 			case 2:
-				ist.getTagCompound().setBoolean("leggings_p", !ist.getTagCompound().getBoolean("leggings_p"));
+				boolean state;
+				ist.getTagCompound().setBoolean("leggings_p",  state = !ist.getTagCompound().getBoolean("leggings_p"));
+				if(player.isSprinting()){
+					IAttributeInstance attrib = player.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+					if (attrib.getModifier(NTUtils.bootsSprintModUUID)!=null)
+			            attrib.removeModifier(NTUtils.bootsSprintMod);
+					if(state)
+						attrib.applyModifier(NTUtils.bootsSprintMod);
+				}
 				break;
 			case 3:
 				ist.getTagCompound().setBoolean("boots_p", !ist.getTagCompound().getBoolean("boots_p"));
