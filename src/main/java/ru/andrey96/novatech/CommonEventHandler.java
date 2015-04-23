@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -46,12 +47,6 @@ public class CommonEventHandler {
 						event.setCanceled(true);
 					}
 				}
-			}else if(event.source == DamageSource.fall && b && boots.hasTagCompound()){
-				ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
-				if(armor.modifyCharge(boots, -(long)(event.ammount*80), true)==0){
-					event.ammount=0;
-					event.setCanceled(true);
-				}
 			}else if(!event.source.isUnblockable() || (event.source.isMagicDamage() || event.source == DamageSource.wither) && h && l && b){
 				if(c && chestplate.hasTagCompound()){
 					ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
@@ -88,6 +83,23 @@ public class CommonEventHandler {
 							player.motionZ*=3;
 						}
 					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onLivingFall(LivingFallEvent event) {
+		if(event.entityLiving instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			ItemStack boots = player.getCurrentArmor(0);
+			if(boots!=null && boots.hasTagCompound() && boots.getItem() instanceof ItemPoweredArmor) {
+				if(event.distance>5){
+					ItemPoweredArmor armor = (ItemPoweredArmor)boots.getItem();
+					if(armor.modifyCharge(boots, -(long)(event.distance*400), true)==0)
+						event.setCanceled(true);
+				}else{
+					event.setCanceled(true);
 				}
 			}
 		}
