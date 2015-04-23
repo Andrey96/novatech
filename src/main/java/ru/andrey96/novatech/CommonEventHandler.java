@@ -51,15 +51,17 @@ public class CommonEventHandler {
 				if(c && chestplate.hasTagCompound()){
 					ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
 					if(chestplate.getTagCompound().getBoolean("chestplate_p")){
-						if(armor.modifyCharge(chestplate, -(long)(event.ammount*250), true)==0){
+						if(armor.modifyCharge(chestplate, -(long)(event.ammount*300), true)==0){
 							event.ammount=0;
 							event.setCanceled(true);
 						}
 					}else{
-						if(armor.modifyCharge(chestplate, -(long)(event.ammount*100), true)==0){
-							event.ammount=(int)(event.ammount*.25);
+						if(armor.modifyCharge(chestplate, -(long)(event.ammount*150), true)==0){
+							event.ammount=(int)(event.ammount*.35);
 							if(event.ammount==0)
 								event.setCanceled(true);
+							else if(event.ammount>6)
+								event.ammount=6;
 						}
 					}
 				}

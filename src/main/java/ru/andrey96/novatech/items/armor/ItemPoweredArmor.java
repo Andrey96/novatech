@@ -45,7 +45,6 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(charge<=0){
 			if(force || charge==0){
 				stack.getTagCompound().setLong("charge", 0);
-				//stack.setItemDamage(100);
 			}
 			return charge;
 		}
@@ -53,12 +52,10 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(charge>=max){
 			if(force || charge==max){
 				stack.getTagCompound().setLong("charge", max);
-				//stack.setItemDamage(1);
 			}
 			return charge-max;
 		}
 		stack.getTagCompound().setLong("charge", charge);
-		//stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
 		return 0;
 	}
 	
@@ -72,7 +69,6 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 		stack.getTagCompound().setLong("charge", charge);
-		//stack.setItemDamage(100-(int)Math.round((((double)charge/max)*99)));
 	}
 	
 	@Override
@@ -152,8 +148,10 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 					case 0: //Helmet
 						if(stack.hasTagCompound()){
 							byte mode = stack.getTagCompound().getByte("flashl_mode");
-							 if(mode!=0 && modifyCharge(stack, mode==1?-20:-40, true)!=0)
-								 stack.getTagCompound().setByte("flashl_mode", (byte)0);
+							if(mode!=0 && modifyCharge(stack, mode==1?-20:-40, true)!=0)
+								stack.getTagCompound().setByte("flashl_mode", (byte)0);
+							if(player.getAir()<=0 && modifyCharge(stack, -2000, true)==0)
+								player.setAir(300);
 						}
 						break;
 					case 2: //Leggings
