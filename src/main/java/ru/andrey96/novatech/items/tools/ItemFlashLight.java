@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemFlashLight extends ItemEnergyTool implements IStateableItem{
 
 	public static final byte lightRange = 32;
+	@SideOnly(Side.CLIENT)
 	private static ModelResourceLocation modelOn, modelP, modelPOn;
 	private byte updateCounter = 0;
 	

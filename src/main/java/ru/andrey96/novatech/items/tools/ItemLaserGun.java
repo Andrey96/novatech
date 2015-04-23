@@ -28,13 +28,15 @@ import ru.andrey96.novatech.recipes.NTRecipes;
 
 public class ItemLaserGun extends ItemEnergyTool{
 
-	private final ModelResourceLocation[] usageModels = new ModelResourceLocation[5];
+	@SideOnly(Side.CLIENT)
+	private ModelResourceLocation[] usageModels;
 	private static final int[] usageDelays = new int[]{ 0, 15, 35, 60 };
 	private static final int[] powerConsumption = new int[]{ 400, 600, 1600, 10000 };
 	
 	public ItemLaserGun(String name) {
 		super(name);
 		if(NTUtils.isClient()){
+			usageModels = new ModelResourceLocation[5];
 			String[] varr = new String[6];
 			varr[0] = NovaTech.MODID+":"+name;
 			for(int i=0; i<5; i++){
@@ -110,14 +112,15 @@ public class ItemLaserGun extends ItemEnergyTool{
 		
 		public EntityPlayer player;
 		public byte tier;
+		@SideOnly(Side.CLIENT)
 		public short renderFramesLeft;
-		//public Vec3 point;
 		public double rayLength;
 		
 		public LaserShot(EntityPlayer player, byte tier) {
 			this.player = player;
 			this.tier = tier;
-			this.renderFramesLeft = (short)(Minecraft.getDebugFPS()/4);
+			if(player.worldObj.isRemote)
+				this.renderFramesLeft = (short)(Minecraft.getDebugFPS()/4);
 		}
 		
 		public void process() {

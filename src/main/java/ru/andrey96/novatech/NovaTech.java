@@ -104,12 +104,13 @@ public class NovaTech {
 			MinecraftForge.EVENT_BUS.register(ceh);
 			FMLCommonHandler.instance().bus().register(ceh);
 			FMLCommonHandler.instance().bus().register(new KeyBindings());
+			NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHandlerClient());
+		}else{
+			NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHandlerServer());
 		}
 		CommonEventHandler ceh = new CommonEventHandler();
 		MinecraftForge.EVENT_BUS.register(ceh);
 		FMLCommonHandler.instance().bus().register(ceh);
-		NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHandlerClient());
-		NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHandlerServer());
 		for(AbstractNTModule module : modules)
 			module.init(event);
 	}
