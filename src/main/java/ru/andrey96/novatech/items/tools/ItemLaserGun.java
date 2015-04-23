@@ -22,7 +22,7 @@ import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
 import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.items.NTItem;
-import ru.andrey96.novatech.network.ChannelHanlderServer;
+import ru.andrey96.novatech.network.ChannelHandlerServer;
 import ru.andrey96.novatech.network.server.PacketS00LaserShot;
 import ru.andrey96.novatech.recipes.NTRecipes;
 
@@ -127,7 +127,7 @@ public class ItemLaserGun extends ItemEnergyTool{
 				rayLength = point.subtract(player.getPositionEyes(1f)).lengthVector();
 				ClientEventHandler.addLaserShot(this);
 			}else{
-				ChannelHanlderServer.broadcastPacketRange(new PacketS00LaserShot(player, tier), player, 128, player);
+				ChannelHandlerServer.broadcastPacketRange(new PacketS00LaserShot(player, tier), player, 128, player);
 			}
 			if(tier==3){
 				player.worldObj.createExplosion(player, point.xCoord, point.yCoord, point.zCoord, 8f, true);

@@ -2,6 +2,7 @@ package ru.andrey96.novatech;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.UUID;
 
 import ru.andrey96.novatech.api.IEnergyItem;
 import ru.andrey96.novatech.api.IStateableItem;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -28,6 +30,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * A bunch of different utility methods
  */
 public class NTUtils {
+	
+	public static final UUID bootsSprintModUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6196278F");
+	public static final AttributeModifier bootsSprintMod = (new AttributeModifier(bootsSprintModUUID, "Sprinting speed boost by boots", .3D, 2)).setSaved(false);
 	
 	@SideOnly(Side.CLIENT)
 	private static Timer timer;

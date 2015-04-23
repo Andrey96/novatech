@@ -20,7 +20,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 @Sharable
-public class ChannelHanlderServer extends SimpleChannelInboundHandler<FMLProxyPacket> {
+public class ChannelHandlerServer extends SimpleChannelInboundHandler<FMLProxyPacket> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket msg) throws Exception {
@@ -34,6 +34,8 @@ public class ChannelHanlderServer extends SimpleChannelInboundHandler<FMLProxyPa
 		switch(id){
 			case 0x00:
 				return new PacketC00StateSwitch();
+			case 0x01:
+				return new PacketC01BootsSprint();
 			default:
 				throw new Exception("Client packet "+NTUtils.byteToHexString(id)+" not found");
 		}

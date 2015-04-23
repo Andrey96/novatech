@@ -1,6 +1,7 @@
 package ru.andrey96.novatech.client;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import org.lwjgl.opengl.GL11;
 
@@ -8,13 +9,19 @@ import com.ibm.icu.impl.duration.impl.Utils;
 
 import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.NovaTech;
+import ru.andrey96.novatech.items.armor.ItemPoweredArmor;
 import ru.andrey96.novatech.items.tools.ItemLaserGun;
+import ru.andrey96.novatech.network.ChannelHandlerClient;
+import ru.andrey96.novatech.network.client.PacketC01BootsSprint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
@@ -37,6 +44,7 @@ public class ClientEventHandler {
 	private static final ResourceLocation textureLaserRay = new ResourceLocation(NovaTech.MODID, "textures/misc/laser_ray.png");
 	private int equipAnimCooldown = -1;
 	private boolean prevFlashLightState = false;
+	private boolean wasSprinting = false;
 	
 	private final Minecraft mc;
 	
@@ -169,6 +177,33 @@ public class ClientEventHandler {
             GlStateManager.enableLighting();
             GlStateManager.enableCull();
             GlStateManager.enableBlend();
+		}
+	}
+	
+	@SubscribeEvent
+	public void onClientTick(ClientTickEvent event) {
+		if(event.phase==Phase.END && mc.thePlayer!=null){
+			if(mc.thePlayer.isSprinting()){
+				if(!wasSprinting){
+					wasSprinting=true;
+					IAttributeInstance attrib = mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+					if (attrib.getModifier(NTUtils.bootsSprintModUUID)!=null)
+			            attrib.removeModifier(NTUtils.bootsSprintMod);
+					ItemStack ist = mc.thePlayer.getCurrentArmor(1); //Leggings
+					if(ist!=null && ist.hasTagCompound() && ist.getItem() instanceof ItemPoweredArmor){
+						if(ist.getTagCompound().getBoolean("leggings_p")){
+							ChannelHandlerClient.sendPacket(new PacketC01BootsSprint(true));
+							attrib.applyModifier(NTUtils.bootsSprintMod);
+						}
+					}
+				}
+			}else if(wasSprinting){
+				wasSprinting=false;
+				ChannelHandlerClient.sendPacket(new PacketC01BootsSprint(false));
+				IAttributeInstance attrib = mc.thePlayer.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+				if (attrib.getModifier(NTUtils.bootsSprintModUUID)!=null)
+		            attrib.removeModifier(NTUtils.bootsSprintMod);
+			}
 		}
 	}
 	

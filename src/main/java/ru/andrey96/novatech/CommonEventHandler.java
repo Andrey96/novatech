@@ -5,6 +5,7 @@ import ru.andrey96.novatech.items.armor.ItemPoweredArmor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -27,7 +28,6 @@ public class CommonEventHandler {
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		if(event.entityLiving instanceof EntityPlayer && event.source!=null){
-			System.out.println("living hurt");
 			EntityPlayer player = (EntityPlayer)event.entityLiving;
 			ItemStack helmet = player.getCurrentArmor(3);
 			boolean h = helmet!=null && helmet.getItem() instanceof ItemPoweredArmor;
@@ -40,7 +40,7 @@ public class CommonEventHandler {
 			if(event.source == DamageSource.onFire || event.source == DamageSource.inFire || event.source == DamageSource.lava){
 				if(h && c && l && b && chestplate.hasTagCompound()){
 					ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
-					if(armor.modifyCharge(chestplate, (long)(event.ammount*100), true)==0){
+					if(armor.modifyCharge(chestplate, -(long)(event.ammount*100), true)==0){
 						player.extinguish();
 						event.ammount=0;
 						event.setCanceled(true);
@@ -48,7 +48,7 @@ public class CommonEventHandler {
 				}
 			}else if(event.source == DamageSource.fall && b && boots.hasTagCompound()){
 				ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
-				if(armor.modifyCharge(boots, (long)(event.ammount*80), true)==0){
+				if(armor.modifyCharge(boots, -(long)(event.ammount*80), true)==0){
 					event.ammount=0;
 					event.setCanceled(true);
 				}
@@ -56,15 +56,36 @@ public class CommonEventHandler {
 				if(c && chestplate.hasTagCompound()){
 					ItemPoweredArmor armor = (ItemPoweredArmor)chestplate.getItem();
 					if(chestplate.getTagCompound().getBoolean("chestplate_p")){
-						if(armor.modifyCharge(chestplate, (long)(event.ammount*250), true)==0){
+						if(armor.modifyCharge(chestplate, -(long)(event.ammount*250), true)==0){
 							event.ammount=0;
 							event.setCanceled(true);
 						}
 					}else{
-						if(armor.modifyCharge(chestplate, (long)(event.ammount*100), true)==0){
+						if(armor.modifyCharge(chestplate, -(long)(event.ammount*100), true)==0){
 							event.ammount=(int)(event.ammount*.25);
 							if(event.ammount==0)
 								event.setCanceled(true);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onLivingJump(LivingJumpEvent event) {
+		if(event.entityLiving instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			ItemStack boots = player.getCurrentArmor(0);
+			if(boots!=null && boots.getItem() instanceof ItemPoweredArmor && boots.hasTagCompound() && boots.getTagCompound().getBoolean("boots_p")){
+				ItemPoweredArmor armor = (ItemPoweredArmor)boots.getItem();
+				if(armor.modifyCharge(boots, -400, true)==0){
+					player.motionY+=.4;
+					if(player.isSprinting()){
+						ItemStack leggings = player.getCurrentArmor(1);
+						if(leggings!=null && leggings.hasTagCompound() && leggings.getItem() instanceof ItemPoweredArmor && leggings.getTagCompound().getBoolean("leggings_p")){
+							player.motionX*=3;
+							player.motionZ*=3;
 						}
 					}
 				}

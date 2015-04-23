@@ -27,7 +27,7 @@ item.power_leggings.state0=Normal
 item.power_leggings.state1=Swift (2x sprint speed with 8 EU/t)
 item.power_boots.name=Power boots
 item.power_boots.state0=Normal
-item.power_boots.state1=Bouncy (4x height jump, 800 EU per jump)
+item.power_boots.state1=Bouncy (4x height jump, 400 EU per jump)
 
 tile.crusher.name=Crusher
 

@@ -1,15 +1,17 @@
 package ru.andrey96.novatech.client;
 
+
 import org.lwjgl.input.Keyboard;
 
 import ru.andrey96.novatech.NTUtils;
 import ru.andrey96.novatech.api.IStateableItem;
-import ru.andrey96.novatech.network.ChannelHanlderClient;
+import ru.andrey96.novatech.network.ChannelHandlerClient;
 import ru.andrey96.novatech.network.client.PacketC00StateSwitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -35,6 +37,7 @@ public class KeyBindings {
 	@SubscribeEvent
 	public void onKeyboardInput(KeyInputEvent event){
 		if(mc.thePlayer!=null && mc.currentScreen==null){
+			//Stateswitch
 			if(stateswitch.isKeyDown()){
 				if(!stateswitchDown){
 					stateswitchDown=true;
@@ -56,7 +59,7 @@ public class KeyBindings {
 						if(it.canSwitchState(ist, mc.thePlayer)){
 							it.onStateSwitch(ist, mc.thePlayer);
 							String state = it.getStateName(ist, mc.thePlayer, false);
-							ChannelHanlderClient.sendPacket(new PacketC00StateSwitch((byte)-1));
+							ChannelHandlerClient.sendPacket(new PacketC00StateSwitch((byte)-1));
 							if(state!=null)
 								NTUtils.chatMessage(I18n.format("message.state", I18n.format(state)));
 						}else{
@@ -76,7 +79,7 @@ public class KeyBindings {
 			if(it.canSwitchState(ist, mc.thePlayer)){
 				it.onStateSwitch(ist, mc.thePlayer);
 				String state = it.getStateName(ist, mc.thePlayer, false);
-				ChannelHanlderClient.sendPacket(new PacketC00StateSwitch(armorSlot));
+				ChannelHandlerClient.sendPacket(new PacketC00StateSwitch(armorSlot));
 				if(state!=null)
 					NTUtils.chatMessage(I18n.format("message.state"+id, I18n.format(state)));
 			}else{

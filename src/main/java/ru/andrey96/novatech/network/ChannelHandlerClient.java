@@ -13,7 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.ChannelHandler.Sharable;
 
 @Sharable
-public class ChannelHanlderClient extends SimpleChannelInboundHandler<FMLProxyPacket> {
+public class ChannelHandlerClient extends SimpleChannelInboundHandler<FMLProxyPacket> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket msg) throws Exception {

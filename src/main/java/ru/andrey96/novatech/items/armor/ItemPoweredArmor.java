@@ -141,13 +141,13 @@ public class ItemPoweredArmor extends NTItemArmor implements IEnergyItem, IState
 					case 0: //Helmet
 						if(stack.hasTagCompound()){
 							byte mode = stack.getTagCompound().getByte("flashl_mode");
-							 if(mode!=0 && modifyCharge(stack, mode==1?20:40, true)!=0)
+							 if(mode!=0 && modifyCharge(stack, mode==1?-20:-40, true)!=0)
 								 stack.getTagCompound().setByte("flashl_mode", (byte)0);
 						}
 						break;
 					case 2: //Leggings
 						if(stack.hasTagCompound() && player.isSprinting()){
-							if(stack.getTagCompound().getBoolean("leggings_p") && modifyCharge(stack, 160, true)!=0)
+							if(stack.getTagCompound().getBoolean("leggings_p") && modifyCharge(stack, -160, true)!=0)
 								stack.getTagCompound().setBoolean("leggings_p", false);
 						}
 						break;

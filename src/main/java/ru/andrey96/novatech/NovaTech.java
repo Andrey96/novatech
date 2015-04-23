@@ -15,8 +15,8 @@ import ru.andrey96.novatech.client.ClientEventHandler;
 import ru.andrey96.novatech.client.KeyBindings;
 import ru.andrey96.novatech.integration.AbstractNTModule;
 import ru.andrey96.novatech.items.NTItems;
-import ru.andrey96.novatech.network.ChannelHanlderClient;
-import ru.andrey96.novatech.network.ChannelHanlderServer;
+import ru.andrey96.novatech.network.ChannelHandlerClient;
+import ru.andrey96.novatech.network.ChannelHandlerServer;
 import ru.andrey96.novatech.recipes.NTRecipes;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -100,12 +100,16 @@ public class NovaTech {
 		items.init();
 		NTRecipes.init(items, blocks);
 		if(event.getSide()==Side.CLIENT){
-			MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+			ClientEventHandler ceh = new ClientEventHandler();
+			MinecraftForge.EVENT_BUS.register(ceh);
+			FMLCommonHandler.instance().bus().register(ceh);
 			FMLCommonHandler.instance().bus().register(new KeyBindings());
 		}
-		MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
-		NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHanlderClient());
-		NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHanlderServer());
+		CommonEventHandler ceh = new CommonEventHandler();
+		MinecraftForge.EVENT_BUS.register(ceh);
+		FMLCommonHandler.instance().bus().register(ceh);
+		NetworkRegistry.INSTANCE.newChannel("NovaTS", new ChannelHandlerClient());
+		NetworkRegistry.INSTANCE.newChannel("NovaTC", new ChannelHandlerServer());
 		for(AbstractNTModule module : modules)
 			module.init(event);
 	}
