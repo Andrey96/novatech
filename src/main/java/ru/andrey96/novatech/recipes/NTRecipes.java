@@ -12,15 +12,14 @@ import net.minecraft.item.crafting.CraftingManager;
 
 public class NTRecipes {
 	
-	public static void addChargeRecipe(Item item) {
-		NTItems items = NovaTech.instance.getItems();
+	public static void addChargeRecipe(NTItems items, Item item) {
 		CraftingManager.getInstance().addRecipe(new ChargingRecipe(item, items.battery));
 		CraftingManager.getInstance().addRecipe(new ChargingRecipe(item, items.batpack));
 	}
 	
 	public static void init(NTItems items, NTBlocks blocks) {
-		addChargeRecipe(items.lasergun);
-		addChargeRecipe(items.flashl);
+		addChargeRecipe(items, items.lasergun);
+		addChargeRecipe(items, items.flashl);
 	}
 	
 }

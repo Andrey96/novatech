@@ -13,7 +13,7 @@ public class NTBlocks {
 	public NTBlocks(boolean isClient){
 		this.isClient = isClient;
 		blocks = new INTBlock[2];
-		blocks[0] = furnace = new BlockFurnace("furnace");
+		blocks[0] = furnace = new BlockFurnace("efurnace");
 		blocks[1] = crusher = new BlockCrusher("crusher");
 	}
 	

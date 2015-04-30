@@ -30,6 +30,7 @@ item.power_boots.state0=Normal
 item.power_boots.state1=Bouncy (4x height jump, 400 EU per jump)
 
 tile.crusher.name=Crusher
+tile.efurnace.name=Furnace
 
 tooltip.charge=Charge: %d/%d EU
 tooltip.state=State: %s
