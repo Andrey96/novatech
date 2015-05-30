@@ -228,4 +228,13 @@ public class NTUtils {
 		Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(text));
 	}
 	
+	public static boolean getBool32(int storage, int pos) {
+		return (storage & (1 << pos)) != 0;
+	}
+
+	public static int setBool32(int storage, int pos, boolean value) {
+		int mask = 1 << pos;
+		return (storage & ~mask) | (value ? mask : 0);
+	}
+	
 }

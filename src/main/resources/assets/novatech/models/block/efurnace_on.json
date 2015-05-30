@@ -4,7 +4,7 @@
         "particle": "novatech:blocks/machine",
         "down": "novatech:blocks/machine",
         "up": "novatech:blocks/machine_top",
-        "north": "novatech:blocks/furnace_off",
+        "north": "novatech:blocks/efurnace_on",
         "east": "novatech:blocks/machine",
         "south": "novatech:blocks/machine",
         "west": "novatech:blocks/machine"

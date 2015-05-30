@@ -1,5 +1,5 @@
 {
-    "parent": "novatech:block/furnace_on",
+    "parent": "novatech:block/energy_tube_none",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

@@ -2,6 +2,7 @@ package ru.andrey96.novatech;
 
 import net.minecraft.item.ItemStack;
 import ru.andrey96.novatech.api.IEnergyItem;
+import ru.andrey96.novatech.api.IEnergyTE;
 
 /**
  * A bunch of utility methods related to energy
@@ -39,7 +40,14 @@ public class EnergyUtils {
 			return false;
 		if(charge==0 || charge<source.getCharge(from))
 			return false;
-		source.setCharge(from, dest.modifyCharge(to, charge, true));
+		source.setCharge(from, source.getCharge(from)+dest.modifyCharge(to, charge, true));
+		return true;
+	}
+	
+	public static boolean transferPower(IEnergyTE from, IEnergyTE to, long charge) {
+		if(from==null || to==null || charge==0 || charge<from.getCharge())
+			return false;
+		from.setCharge(from.getCharge()+to.modifyCharge(charge, true));
 		return true;
 	}
 	

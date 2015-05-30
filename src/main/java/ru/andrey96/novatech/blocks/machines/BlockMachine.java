@@ -60,10 +60,8 @@ public abstract class BlockMachine extends NTBlock implements IScrewable {
 	@Override
 	public int getMetaFromState(IBlockState state)
     {
-        byte b0 = 0;
-        int i = b0 | ((EnumFacing)state.getValue(FACING)).getHorizontalIndex();
-        i |= ((boolean)state.getValue(WORKING)?1:0) << 2;
-        return i;
+        return ((EnumFacing)state.getValue(FACING)).getHorizontalIndex()
+        |(((boolean)state.getValue(WORKING)?1:0) << 2);
     }
 	
 	@Override

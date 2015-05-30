@@ -29,6 +29,7 @@ item.power_boots.name=Power boots
 item.power_boots.state0=Normal
 item.power_boots.state1=Bouncy (4x height jump, 400 EU per jump)
 
+tile.energy_tube.name=Conduit
 tile.crusher.name=Crusher
 tile.efurnace.name=Furnace
 

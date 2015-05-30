@@ -9,9 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockFurnace extends BlockMachine{
+public class BlockEFurnace extends BlockMachine{
 
-	public BlockFurnace(String name) {
+	public BlockEFurnace(String name) {
 		super(name);
 	}
 

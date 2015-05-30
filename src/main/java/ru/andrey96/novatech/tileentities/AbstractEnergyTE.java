@@ -1,52 +1,23 @@
 package ru.andrey96.novatech.tileentities;
 
-import java.util.HashSet;
-
-import ru.andrey96.novatech.api.IEnergyNode;
-import ru.andrey96.novatech.energynet.EnergyNet;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import ru.andrey96.novatech.api.IEnergyTE;
+import ru.andrey96.novatech.energynet.EnergyNet;
 
-public abstract class AbstractEnergyTE extends TileEntity implements IEnergyNode{
-
-	private EnergyNet energyNet = null;
-	private final HashSet<IEnergyNode> receivers = new HashSet<>(), providers = new HashSet<>();
-	private long charge = 0;
+public abstract class AbstractEnergyTE extends TileEntity implements IEnergyTE{
 	
+	public EnergyNet energyNet = null;
+	private long charge = 0;
+
 	@Override
 	public void onConnect(EnergyNet net) {
-		energyNet = net;
+		this.energyNet = net;
 	}
 
 	@Override
 	public void onDisconnect() {
-		energyNet = null;
-		receivers.clear();
-		providers.clear();
-	}
-
-	@Override
-	public void addNeighbor(IEnergyNode neighbor) {
-		if(neighbor.getNodeType()==NodeType.PROVIDER){
-			providers.add(neighbor);
-		}else if(neighbor.getNodeType()==NodeType.RECEIVER){
-			receivers.add(neighbor);
-		}else{
-			providers.add(neighbor);
-			receivers.add(neighbor);
-		}
-	}
-
-	@Override
-	public void removeNeighbor(IEnergyNode neighbor) {
-		if(neighbor.getNodeType()==NodeType.PROVIDER){
-			providers.remove(neighbor);
-		}else if(neighbor.getNodeType()==NodeType.RECEIVER){
-			receivers.remove(neighbor);
-		}else{
-			providers.remove(neighbor);
-			receivers.remove(neighbor);
-		}
+		this.energyNet = null;
 	}
 
 	@Override
@@ -77,7 +48,7 @@ public abstract class AbstractEnergyTE extends TileEntity implements IEnergyNode
 		setCharge(newCharge);
 		return 0;
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);

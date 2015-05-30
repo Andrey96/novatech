@@ -1,0 +1,32 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "energy_tube": "novatech:blocks/energy_tube"
+    },
+    "elements": [
+        {
+            "from": [6,6,6],
+            "to": [10,10,10],
+            "faces": {
+                "up": {
+                    "texture": "#energy_tube"
+                },
+                "down": {
+                    "texture": "#energy_tube"
+                },
+                "west": {
+                    "texture": "#energy_tube"
+                },
+                "east": {
+                    "texture": "#energy_tube"
+                },
+                "north": {
+                    "texture": "#energy_tube"
+                },
+                "south": {
+                    "texture": "#energy_tube"
+                }
+            }
+        }
+    ]
+}

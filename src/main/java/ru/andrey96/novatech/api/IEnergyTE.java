@@ -2,7 +2,7 @@ package ru.andrey96.novatech.api;
 
 import ru.andrey96.novatech.energynet.EnergyNet;
 
-public interface IEnergyNode {
+public interface IEnergyTE {
 	
 	public static enum NodeType{
 		RECEIVER, PROVIDER, BOTH;
@@ -21,8 +21,6 @@ public interface IEnergyNode {
 	 * Called when this tile being disconnected from energy net. Used to clear neighbor lists
 	 */
 	public void onDisconnect();
-	public void addNeighbor(IEnergyNode neighbor);
-	public void removeNeighbor(IEnergyNode neighbor);
 	
 	public long getMaxCharge();
 	public long getCharge();
